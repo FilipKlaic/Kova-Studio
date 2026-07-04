@@ -1,26 +1,68 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ember: var(--ember);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-syne);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --background: oklch(0.055 0 0);
+  --foreground: oklch(0.93 0.008 75);
+  --card: oklch(0.09 0 0);
+  --card-foreground: oklch(0.93 0.008 75);
+  --primary: oklch(0.93 0.008 75);
+  --primary-foreground: oklch(0.055 0 0);
+  --secondary: oklch(0.12 0 0);
+  --secondary-foreground: oklch(0.93 0.008 75);
+  --muted: oklch(0.12 0 0);
+  --muted-foreground: oklch(0.42 0 0);
+  --accent: oklch(0.12 0 0);
+  --accent-foreground: oklch(0.93 0.008 75);
+  --border: oklch(0.14 0 0);
+  --input: oklch(0.14 0 0);
+  --ring: oklch(0.65 0.16 45);
+  --ember: oklch(0.65 0.16 45);
+  --radius: 0.25rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display), var(--font-sans);
+  }
 }
