@@ -5,21 +5,13 @@ import { motion } from "motion/react";
 const team = [
   {
     name: "Filip Klaic",
-    role: "Founder & Developer",
-    bio: "Full-stack developer with a passion for building tools people love. Specializes in TypeScript, React, and scalable backend systems.",
-    real: true,
+    role: "Co-founder & Developer",
+    bio: "Full-stack developer specialising in TypeScript, React, and scalable backend systems. Builds tools people actually want to use.",
   },
   {
-    name: "Open position",
-    role: "Designer",
-    bio: "We're looking for a designer who cares deeply about details and loves collaborating closely with developers.",
-    real: false,
-  },
-  {
-    name: "Open position",
-    role: "Developer",
-    bio: "Got skills and want to work on interesting projects? We're always open to talking with talented developers.",
-    real: false,
+    name: "Oliver Martinsson",
+    role: "Co-founder & Developer",
+    bio: "Full-stack developer with a focus on .NET and modern web platforms. Brings backend depth and a sharp eye for community-driven products.",
   },
 ];
 
@@ -50,10 +42,10 @@ export function Team() {
           </motion.p>
         </div>
 
-        <div className="grid gap-px bg-border sm:grid-cols-3">
+        <div className="grid gap-px bg-border sm:grid-cols-2">
           {team.map((member, i) => (
             <motion.div
-              key={member.name + i}
+              key={member.name}
               initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -62,22 +54,12 @@ export function Team() {
                 delay: i * 0.1,
                 ease: [0.25, 0.46, 0.45, 0.94],
               }}
-              className={`flex flex-col gap-6 bg-background p-8 ${!member.real ? "opacity-50 hover:opacity-70 transition-opacity duration-300" : ""}`}
+              className="flex flex-col gap-6 bg-background p-8"
             >
-              <div
-                className={`h-16 w-16 rounded-sm ${
-                  member.real
-                    ? "bg-ember/20 ring-1 ring-ember/40"
-                    : "border border-dashed border-border"
-                } flex items-center justify-center`}
-              >
-                {member.real ? (
-                  <span className="font-display text-xl font-bold text-ember">
-                    {member.name[0]}
-                  </span>
-                ) : (
-                  <span className="text-xl text-muted-foreground/40">+</span>
-                )}
+              <div className="flex h-16 w-16 items-center justify-center rounded-sm bg-ember/20 ring-1 ring-ember/40">
+                <span className="font-display text-xl font-bold text-ember">
+                  {member.name[0]}
+                </span>
               </div>
               <div className="flex flex-col gap-1">
                 <h3 className="font-semibold text-foreground">{member.name}</h3>

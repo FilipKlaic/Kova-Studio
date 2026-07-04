@@ -1,21 +1,35 @@
 "use client";
 
 import { motion } from "motion/react";
+import Link from "next/link";
 
-const featured = {
-  number: "001",
-  title: "Fogarolli",
-  category: "Web Application",
-  year: "2025",
-  description:
-    "A dual-app system built for a catering and events company. The inventory app runs on iPads at live events to track wagon contents in real time. The companion shift planner lets employees install it as a PWA, view upcoming shifts, and mark their availability — while the boss manages everything from an admin panel.",
-  tags: ["React", "TypeScript", "Vite", "Supabase", "PWA"],
-  outcome: "Used daily at live events across multiple wagons.",
-};
+const featured = [
+  {
+    number: "001",
+    title: "Fogarolli",
+    category: "Web Application",
+    year: "2025",
+    description:
+      "A dual-app system built for a catering and events company. The inventory app runs on iPads at live events to track wagon contents in real time. The companion shift planner lets employees install it as a PWA, view upcoming shifts, and mark their availability — while the boss manages everything from an admin panel.",
+    tags: ["React", "TypeScript", "Vite", "Supabase", "PWA"],
+    outcome: "Used daily at live events across multiple wagons.",
+    href: null,
+  },
+  {
+    number: "002",
+    title: "Two Wheels Nordic",
+    category: "Community Platform",
+    year: "2025",
+    description:
+      "A community forum for Nordic motorcyclists. Riders across Scandinavia connect, share routes and experiences, and discuss all things two wheels — organised by category with thread tracking, user authentication, and a privacy-first approach. No ads, no tracking.",
+    tags: ["ASP.NET Core", "C#", "Blazor"],
+    outcome: "Live and open to the Nordic riding community.",
+    href: "https://www.twowheelsnordic.se",
+  },
+];
 
 const upcoming = [
-  { number: "002", title: "Coming Soon", category: "Mobile App", year: "2025" },
-  { number: "003", title: "Coming Soon", category: "Website", year: "2025" },
+  { number: "003", title: "Coming Soon", category: "Mobile App", year: "2025" },
 ];
 
 export function Work() {
@@ -45,57 +59,83 @@ export function Work() {
           </motion.p>
         </div>
 
-        {/* Featured project */}
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="group mb-px bg-card p-8 transition-colors duration-300 hover:bg-card/80 sm:p-12"
-        >
-          <div className="flex flex-col gap-10 lg:flex-row lg:gap-20">
-            {/* Left: meta + title */}
-            <div className="flex flex-col gap-6 lg:w-1/2">
-              <div className="flex items-center gap-4">
-                <span className="font-mono text-xs text-muted-foreground">
-                  {featured.number}
-                </span>
-                <span className="h-px flex-1 bg-border" />
-                <span className="font-mono text-xs text-ember">
-                  {featured.category}
-                </span>
+        {/* Featured projects */}
+        <div className="flex flex-col gap-px">
+          {featured.map((project, i) => {
+            const card = (
+              <div className="flex flex-col gap-10 lg:flex-row lg:gap-20">
+                <div className="flex flex-col gap-6 lg:w-1/2">
+                  <div className="flex items-center gap-4">
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {project.number}
+                    </span>
+                    <span className="h-px flex-1 bg-border" />
+                    <span className="font-mono text-xs text-ember">
+                      {project.category}
+                    </span>
+                  </div>
+                  <h3 className="font-display text-4xl font-bold text-foreground sm:text-5xl">
+                    {project.title}
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-sm border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex flex-col justify-between gap-8 lg:w-1/2">
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {project.description}
+                  </p>
+                  <div className="flex items-center justify-between border-t border-border pt-6">
+                    <p className="text-xs italic text-muted-foreground/60">
+                      {project.outcome}
+                    </p>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      {project.year}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <h3 className="font-display text-4xl font-bold text-foreground sm:text-5xl">
-                {featured.title}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {featured.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-sm border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
+            );
 
-            {/* Right: description + outcome */}
-            <div className="flex flex-col justify-between gap-8 lg:w-1/2">
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {featured.description}
-              </p>
-              <div className="flex items-center justify-between border-t border-border pt-6">
-                <p className="text-xs text-muted-foreground/60 italic">
-                  {featured.outcome}
-                </p>
-                <span className="font-mono text-xs text-muted-foreground">
-                  {featured.year}
-                </span>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+            return (
+              <motion.div
+                key={project.number}
+                initial={{ opacity: 0, y: 32 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.7,
+                  delay: i * 0.1,
+                  ease: [0.25, 0.46, 0.45, 0.94],
+                }}
+                className="bg-card p-8 transition-colors duration-300 hover:bg-card/80 sm:p-12"
+              >
+                {project.href ? (
+                  <Link
+                    href={project.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group block"
+                  >
+                    {card}
+                    <p className="mt-6 font-mono text-xs text-ember opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                      Visit site →
+                    </p>
+                  </Link>
+                ) : (
+                  card
+                )}
+              </motion.div>
+            );
+          })}
+        </div>
 
         {/* Upcoming rows */}
         <div className="divide-y divide-border border-t border-border">
