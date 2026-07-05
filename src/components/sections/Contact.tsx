@@ -49,17 +49,24 @@ export function Contact() {
             </p>
             <div className="flex flex-col gap-3">
               <Link
-                href="mailto:hello@kovastudio.dev"
+                href="mailto:file.klaic@gmail.com"
                 className="group inline-flex items-center gap-2 rounded-sm bg-ember px-6 py-3 text-sm font-medium text-background transition-all duration-200 hover:opacity-90"
               >
-                hello@kovastudio.dev
+                file.klaic@gmail.com
                 <span className="transition-transform duration-200 group-hover:translate-x-1">
                   →
                 </span>
               </Link>
-              <p className="font-mono text-xs text-muted-foreground/60">
-                Or find us on LinkedIn and GitHub
-              </p>
+              <div className="flex items-center gap-4">
+                <Link
+                  href="https://github.com/FilipKlaic"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-xs text-muted-foreground/60 transition-colors hover:text-ember"
+                >
+                  GitHub →
+                </Link>
+              </div>
             </div>
           </motion.div>
         </div>

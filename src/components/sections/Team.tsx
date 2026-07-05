@@ -1,17 +1,20 @@
 "use client";
 
 import { motion } from "motion/react";
+import Link from "next/link";
 
 const team = [
   {
     name: "Filip Klaic",
     role: "Co-founder & Developer",
     bio: "Full-stack developer specialising in TypeScript, React, and scalable backend systems. Builds tools people actually want to use.",
+    github: "https://github.com/FilipKlaic",
   },
   {
     name: "Oliver Martinsson",
     role: "Co-founder & Developer",
     bio: "Full-stack developer with a focus on .NET and modern web platforms. Brings backend depth and a sharp eye for community-driven products.",
+    github: null,
   },
 ];
 
@@ -68,6 +71,16 @@ export function Team() {
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {member.bio}
               </p>
+              {member.github && (
+                <Link
+                  href={member.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-fit font-mono text-xs text-muted-foreground/60 transition-colors hover:text-ember"
+                >
+                  GitHub →
+                </Link>
+              )}
             </motion.div>
           ))}
         </div>

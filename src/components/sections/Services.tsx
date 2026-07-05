@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
+import SpotlightCard from "@/components/reactbits/SpotlightCard";
 
 const services = [
   {
@@ -65,32 +66,33 @@ export function Services() {
                 delay: i * 0.1,
                 ease: [0.25, 0.46, 0.45, 0.94],
               }}
-              className="group relative flex flex-col gap-8 bg-background p-8 transition-colors duration-300 hover:bg-card"
             >
-              <span className="font-mono text-xs text-muted-foreground">
-                {service.number}
-              </span>
-              <div className="flex flex-col gap-4">
-                <h3 className="text-xl font-semibold text-foreground">
-                  {service.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {service.description}
-                </p>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {service.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="rounded-sm border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <span className="absolute bottom-8 right-8 text-ember opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                →
-              </span>
+              <SpotlightCard className="group relative flex h-full flex-col gap-8 bg-background p-8 transition-colors duration-300 hover:bg-card">
+                <span className="font-mono text-xs text-muted-foreground">
+                  {service.number}
+                </span>
+                <div className="flex flex-col gap-4">
+                  <h3 className="text-xl font-semibold text-foreground">
+                    {service.title}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {service.description}
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {service.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="rounded-sm border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <span className="absolute bottom-8 right-8 text-ember opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  →
+                </span>
+              </SpotlightCard>
             </motion.div>
           ))}
         </div>

@@ -4,15 +4,20 @@ import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
 import gsap from "gsap";
 import Link from "next/link";
-
-const ease = [0.25, 0.46, 0.45, 0.94] as const;
+import BlurText from "@/components/reactbits/BlurText";
+import ShinyText from "@/components/reactbits/ShinyText";
+import Silk from "@/components/reactbits/Silk";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 32 },
+  hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, delay: i * 0.12, ease },
+    transition: {
+      duration: 0.7,
+      delay: i * 0.12,
+      ease: [0.25, 0.46, 0.45, 0.94] as const,
+    },
   }),
 };
 
@@ -34,31 +39,38 @@ export function Hero() {
 
   return (
     <section className="relative flex min-h-screen flex-col justify-between overflow-hidden pt-16">
-      <div className="mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 pb-24 pt-24 lg:px-8">
+      {/* Silk ambient background */}
+      <div className="absolute inset-0 z-0 opacity-60">
+        <Silk />
+      </div>
+
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 pb-24 pt-24 lg:px-8">
         <div className="max-w-5xl">
-          <motion.p
+          <motion.div
             custom={0}
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="mb-8 text-sm font-mono uppercase tracking-widest text-muted-foreground"
+            className="mb-8"
           >
-            Studio — Est. 2025
-          </motion.p>
+            <ShinyText
+              text="Studio — Est. 2025"
+              className="font-mono text-sm uppercase tracking-widest"
+              color="#3f3f4f"
+              shineColor="#a0a0c0"
+              speed={4}
+            />
+          </motion.div>
 
-          <motion.h1
-            custom={1}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="font-display text-6xl font-bold leading-[0.9] tracking-tight text-foreground sm:text-7xl lg:text-[9rem]"
-          >
-            Digital
-            <br />
-            <span className="text-ember">products</span>
-            <br />
-            built to last.
-          </motion.h1>
+          <BlurText
+            text="Digital products built to last."
+            tag="h1"
+            animateBy="words"
+            direction="bottom"
+            delay={120}
+            stepDuration={0.5}
+            className="font-display text-6xl font-bold leading-[0.95] tracking-tight text-foreground sm:text-7xl lg:text-[9rem]"
+          />
 
           <motion.p
             custom={3}
@@ -99,7 +111,7 @@ export function Hero() {
 
       <div
         ref={marqueRef}
-        className="border-t border-border py-5 overflow-hidden"
+        className="relative z-10 border-t border-border py-5 overflow-hidden"
       >
         <div className="marquee-inner flex whitespace-nowrap">
           {Array.from({ length: 2 }).map((_, i) => (

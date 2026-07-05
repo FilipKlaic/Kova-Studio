@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import { KovaLogo } from "@/components/layout/KovaLogo";
 
 const navLinks = [
   { label: "Work", href: "#work" },
@@ -30,11 +31,8 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
-        <Link
-          href="/"
-          className="font-display text-xl font-bold tracking-widest text-foreground uppercase"
-        >
-          Kova
+        <Link href="/">
+          <KovaLogo size="md" />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">

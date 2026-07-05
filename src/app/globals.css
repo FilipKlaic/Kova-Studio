@@ -30,20 +30,20 @@
 }
 
 :root {
-  --background: oklch(0.055 0 0);
-  --foreground: oklch(0.93 0.008 75);
-  --card: oklch(0.09 0 0);
-  --card-foreground: oklch(0.93 0.008 75);
-  --primary: oklch(0.93 0.008 75);
-  --primary-foreground: oklch(0.055 0 0);
-  --secondary: oklch(0.12 0 0);
-  --secondary-foreground: oklch(0.93 0.008 75);
-  --muted: oklch(0.12 0 0);
-  --muted-foreground: oklch(0.42 0 0);
-  --accent: oklch(0.12 0 0);
-  --accent-foreground: oklch(0.93 0.008 75);
-  --border: oklch(0.14 0 0);
-  --input: oklch(0.14 0 0);
+  --background: oklch(0.17 0.004 275);
+  --foreground: oklch(0.91 0.010 275);
+  --card: oklch(0.20 0.006 275);
+  --card-foreground: oklch(0.91 0.010 275);
+  --primary: oklch(0.91 0.010 275);
+  --primary-foreground: oklch(0.17 0.004 275);
+  --secondary: oklch(0.24 0.006 275);
+  --secondary-foreground: oklch(0.91 0.010 275);
+  --muted: oklch(0.24 0.006 275);
+  --muted-foreground: oklch(0.56 0.008 275);
+  --accent: oklch(0.24 0.006 275);
+  --accent-foreground: oklch(0.91 0.010 275);
+  --border: oklch(0.29 0.006 275);
+  --input: oklch(0.29 0.006 275);
   --ring: oklch(0.65 0.16 45);
   --ember: oklch(0.65 0.16 45);
   --radius: 0.25rem;
@@ -65,4 +65,91 @@
   .font-display {
     font-family: var(--font-display), var(--font-sans);
   }
+}
+
+/* Hero ambient background */
+.hero-silk {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.hero-silk-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.14;
+  will-change: transform;
+}
+
+.hero-silk-blob-1 {
+  width: 55%;
+  height: 70%;
+  background: oklch(0.65 0.16 45);
+  top: -20%;
+  left: -10%;
+  animation: silk-drift-1 14s ease-in-out infinite alternate;
+}
+
+.hero-silk-blob-2 {
+  width: 45%;
+  height: 55%;
+  background: oklch(0.55 0.12 55);
+  bottom: -15%;
+  right: -5%;
+  animation: silk-drift-2 18s ease-in-out infinite alternate;
+}
+
+.hero-silk-blob-3 {
+  width: 35%;
+  height: 40%;
+  background: oklch(0.45 0.08 40);
+  top: 40%;
+  left: 50%;
+  animation: silk-drift-3 22s ease-in-out infinite alternate;
+}
+
+@keyframes silk-drift-1 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(8%, 12%) scale(1.1); }
+}
+
+@keyframes silk-drift-2 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-10%, -8%) scale(0.95); }
+}
+
+@keyframes silk-drift-3 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(-6%, 10%) scale(1.08); }
+}
+
+/* SpotlightCard */
+.card-spotlight {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    var(--spotlight-color, rgba(232, 100, 26, 0.08)),
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.card-spotlight:hover::before {
+  opacity: 1;
+}
+
+.card-spotlight > * {
+  position: relative;
+  z-index: 1;
 }

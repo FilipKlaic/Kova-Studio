@@ -1,9 +1,23 @@
 "use client";
 
-import { motion } from "motion/react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
+import SpotlightCard from "@/components/reactbits/SpotlightCard";
 
-const featured = [
+interface Project {
+  number: string;
+  title: string;
+  category: string;
+  year: string;
+  description: string;
+  tags: string[];
+  outcome: string;
+  href?: string | null;
+  video?: string | null;
+}
+
+const featured: Project[] = [
   {
     number: "001",
     title: "Fogarolli",
@@ -14,6 +28,7 @@ const featured = [
     tags: ["React", "TypeScript", "Vite", "Supabase", "PWA"],
     outcome: "Used daily at live events across multiple wagons.",
     href: null,
+    video: null, // drop your video URL or path here, e.g. "/videos/fogarolli.mp4"
   },
   {
     number: "002",
@@ -25,6 +40,7 @@ const featured = [
     tags: ["ASP.NET Core", "C#", "Blazor"],
     outcome: "Live and open to the Nordic riding community.",
     href: "https://www.twowheelsnordic.se",
+    video: null,
   },
 ];
 
@@ -32,9 +48,78 @@ const upcoming = [
   { number: "003", title: "Coming Soon", category: "Mobile App", year: "2025" },
 ];
 
+function VideoModal({ src, onClose }: { src: string; onClose: () => void }) {
+  const isEmbed =
+    src.includes("youtube.com") ||
+    src.includes("youtu.be") ||
+    src.includes("vimeo.com");
+
+  const embedSrc = src.includes("youtu.be")
+    ? src.replace("youtu.be/", "www.youtube.com/embed/")
+    : src.includes("youtube.com/watch?v=")
+    ? src.replace("watch?v=", "embed/")
+    : src;
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        key="modal-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+        onClick={onClose}
+      >
+        <motion.div
+          key="modal-content"
+          initial={{ opacity: 0, scale: 0.95, y: 16 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 16 }}
+          transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="relative w-full max-w-4xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            onClick={onClose}
+            className="absolute -top-10 right-0 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Close ✕
+          </button>
+
+          <div className="aspect-video w-full overflow-hidden rounded-sm border border-border bg-black">
+            {isEmbed ? (
+              <iframe
+                src={embedSrc}
+                className="h-full w-full"
+                allow="autoplay; fullscreen"
+                allowFullScreen
+              />
+            ) : (
+              <video
+                src={src}
+                className="h-full w-full"
+                controls
+                autoPlay
+                playsInline
+              />
+            )}
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
 export function Work() {
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+
   return (
     <section id="work" className="border-t border-border py-32">
+      {activeVideo && (
+        <VideoModal src={activeVideo} onClose={() => setActiveVideo(null)} />
+      )}
+
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mb-20 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <motion.h2
@@ -62,7 +147,7 @@ export function Work() {
         {/* Featured projects */}
         <div className="flex flex-col gap-px">
           {featured.map((project, i) => {
-            const card = (
+            const cardContent = (
               <div className="flex flex-col gap-10 lg:flex-row lg:gap-20">
                 <div className="flex flex-col gap-6 lg:w-1/2">
                   <div className="flex items-center gap-4">
@@ -115,23 +200,35 @@ export function Work() {
                   delay: i * 0.1,
                   ease: [0.25, 0.46, 0.45, 0.94],
                 }}
-                className="bg-card p-8 transition-colors duration-300 hover:bg-card/80 sm:p-12"
+                className="overflow-hidden"
               >
-                {project.href ? (
-                  <Link
-                    href={project.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group block"
-                  >
-                    {card}
-                    <p className="mt-6 font-mono text-xs text-ember opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                      Visit site →
-                    </p>
-                  </Link>
-                ) : (
-                  card
-                )}
+                <SpotlightCard className="bg-card p-8 transition-colors duration-300 hover:bg-card/80 sm:p-12">
+                  {project.href ? (
+                    <Link
+                      href={project.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group block"
+                    >
+                      {cardContent}
+                      <p className="mt-6 font-mono text-xs text-ember opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                        Visit site →
+                      </p>
+                    </Link>
+                  ) : project.video ? (
+                    <button
+                      onClick={() => setActiveVideo(project.video!)}
+                      className="group block w-full text-left"
+                    >
+                      {cardContent}
+                      <p className="mt-6 font-mono text-xs text-ember opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                        Watch demo →
+                      </p>
+                    </button>
+                  ) : (
+                    cardContent
+                  )}
+                </SpotlightCard>
               </motion.div>
             );
           })}
