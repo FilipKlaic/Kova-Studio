@@ -15,6 +15,7 @@ interface Project {
   status: "success" | "warn";
   statusLabel: string;
   description: string;
+  highlights: string[];
   tags: string[];
   outcome: string;
   href?: string | null;
@@ -31,6 +32,11 @@ const featured: Project[] = [
     statusLabel: "Live",
     description:
       "A dual-app system built for a catering and events company. The inventory app runs on iPads at live events to track wagon contents in real time. The companion shift planner lets employees install it as a PWA, view upcoming shifts, and mark their availability — while the boss manages everything from an admin panel.",
+    highlights: [
+      "iPad inventory app tracks wagon stock live, on-site, during events",
+      "Shift planner installs as a PWA so staff can check shifts from their phone",
+      "Admin panel gives the owner full oversight across both apps",
+    ],
     tags: ["React", "TypeScript", "Vite", "Supabase", "PWA"],
     outcome: "Used daily at live events across multiple wagons.",
     href: null,
@@ -45,6 +51,11 @@ const featured: Project[] = [
     statusLabel: "Live",
     description:
       "A community forum for Nordic motorcyclists. Riders across Scandinavia connect, share routes and experiences, and discuss all things two wheels — organised by category with thread tracking, user authentication, and a privacy-first approach. No ads, no tracking.",
+    highlights: [
+      "Category-organised forum for route sharing and rider discussion",
+      "Thread tracking and user authentication built on ASP.NET Core",
+      "Privacy-first by design — no ads, no tracking, ever",
+    ],
     tags: ["ASP.NET Core", "C#", "Blazor"],
     outcome: "Live and open to the Nordic riding community.",
     href: "https://www.twowheelsnordic.se",
@@ -76,7 +87,7 @@ function VideoModal({ src, onClose }: { src: string; onClose: () => void }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
+        className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
         onClick={onClose}
       >
         <motion.div
@@ -119,11 +130,148 @@ function VideoModal({ src, onClose }: { src: string; onClose: () => void }) {
   );
 }
 
+function ProjectModal({
+  project,
+  onClose,
+  onWatchDemo,
+}: {
+  project: Project;
+  onClose: () => void;
+  onWatchDemo: (src: string) => void;
+}) {
+  return (
+    <AnimatePresence>
+      <motion.div
+        key="project-modal-backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.2 }}
+        className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm sm:items-center"
+        onClick={onClose}
+      >
+        <motion.div
+          key="project-modal-content"
+          initial={{ opacity: 0, scale: 0.95, y: 16 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 16 }}
+          transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="relative my-8 w-full max-w-2xl border border-border bg-card p-8 sm:p-10"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <button
+            onClick={onClose}
+            className="absolute right-6 top-6 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground sm:right-8 sm:top-8"
+            aria-label="Close"
+          >
+            Close ✕
+          </button>
+
+          <div className="flex items-center justify-between gap-4 pr-16">
+            <div className="flex items-center gap-3">
+              <span className="font-mono text-xs text-muted-foreground">
+                {project.number}
+              </span>
+              <span className="font-mono text-xs uppercase tracking-wide text-focus">
+                {project.category}
+              </span>
+            </div>
+            <Chip status={project.status}>{project.statusLabel}</Chip>
+          </div>
+
+          <h3 className="mt-6 font-display text-3xl font-medium text-foreground sm:text-4xl">
+            {project.title}
+          </h3>
+
+          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+            {project.description}
+          </p>
+
+          <div className="mt-8">
+            <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
+              What it&apos;s used for
+            </p>
+            <ul className="mt-4 flex flex-col gap-3">
+              {project.highlights.map((point) => (
+                <li
+                  key={point}
+                  className="flex items-start gap-2.5 text-sm leading-relaxed text-foreground/90"
+                >
+                  <span className="mt-1.5 size-1.5 shrink-0 bg-focus" />
+                  {point}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="mt-8">
+            <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
+              Tech stack
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-8 flex flex-col gap-6 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-start sm:gap-1">
+              <p className="text-xs italic text-muted-foreground/70">
+                {project.outcome}
+              </p>
+              <span className="font-mono text-xs text-muted-foreground">
+                {project.year}
+              </span>
+            </div>
+
+            {project.href ? (
+              <Link
+                href={project.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-square group inline-flex items-center justify-center gap-1.5 bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85"
+              >
+                Visit live site
+                <ArrowIcon className="size-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            ) : project.video ? (
+              <button
+                onClick={() => onWatchDemo(project.video!)}
+                className="btn-square group inline-flex items-center justify-center gap-1.5 bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85"
+              >
+                Watch demo
+                <ArrowIcon className="size-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </button>
+            ) : null}
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
 export function Work() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
 
   return (
     <section id="work" className="border-t border-border py-32">
+      {activeProject && (
+        <ProjectModal
+          project={activeProject}
+          onClose={() => setActiveProject(null)}
+          onWatchDemo={(src) => {
+            setActiveProject(null);
+            setActiveVideo(src);
+          }}
+        />
+      )}
       {activeVideo && (
         <VideoModal src={activeVideo} onClose={() => setActiveVideo(null)} />
       )}
@@ -154,93 +302,72 @@ export function Work() {
 
         {/* Featured projects */}
         <div className="grid gap-6 md:grid-cols-2">
-          {featured.map((project, i) => {
-            const cardContent = (
-              <div className="flex h-full flex-col gap-8">
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs text-muted-foreground">
-                      {project.number}
-                    </span>
-                    <span className="font-mono text-xs uppercase tracking-wide text-focus">
-                      {project.category}
-                    </span>
+          {featured.map((project, i) => (
+            <motion.div
+              key={project.number}
+              initial={{ opacity: 0, y: 32 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.7,
+                delay: i * 0.1,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+            >
+              <SpotlightCard className="h-full border border-border bg-card transition-colors duration-300">
+                <button
+                  onClick={() => setActiveProject(project)}
+                  className="group flex h-full w-full flex-col p-8 text-left sm:p-10"
+                >
+                  <div className="flex h-full flex-col gap-8">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <span className="font-mono text-xs text-muted-foreground">
+                          {project.number}
+                        </span>
+                        <span className="font-mono text-xs uppercase tracking-wide text-focus">
+                          {project.category}
+                        </span>
+                      </div>
+                      <Chip status={project.status}>{project.statusLabel}</Chip>
+                    </div>
+
+                    <h3 className="font-display text-3xl font-medium text-foreground sm:text-4xl">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-sm leading-relaxed text-muted-foreground">
+                      {project.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="mt-auto flex items-center justify-between border-t border-border pt-6">
+                      <p className="text-xs italic text-muted-foreground/70">
+                        {project.outcome}
+                      </p>
+                      <span className="font-mono text-xs text-muted-foreground">
+                        {project.year}
+                      </span>
+                    </div>
                   </div>
-                  <Chip status={project.status}>{project.statusLabel}</Chip>
-                </div>
 
-                <h3 className="font-display text-3xl font-medium text-foreground sm:text-4xl">
-                  {project.title}
-                </h3>
-
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {project.description}
-                </p>
-
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                <div className="mt-auto flex items-center justify-between border-t border-border pt-6">
-                  <p className="text-xs italic text-muted-foreground/70">
-                    {project.outcome}
+                  <p className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-focus opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    View details <ArrowIcon className="size-3" />
                   </p>
-                  <span className="font-mono text-xs text-muted-foreground">
-                    {project.year}
-                  </span>
-                </div>
-              </div>
-            );
-
-            return (
-              <motion.div
-                key={project.number}
-                initial={{ opacity: 0, y: 32 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.7,
-                  delay: i * 0.1,
-                  ease: [0.25, 0.46, 0.45, 0.94],
-                }}
-              >
-                <SpotlightCard className="flex h-full flex-col border border-border bg-card p-8 transition-colors duration-300 sm:p-10">
-                  {project.href ? (
-                    <Link
-                      href={project.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex h-full flex-col"
-                    >
-                      {cardContent}
-                      <p className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-focus opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                        Visit site <ArrowIcon className="size-3" />
-                      </p>
-                    </Link>
-                  ) : project.video ? (
-                    <button
-                      onClick={() => setActiveVideo(project.video!)}
-                      className="group flex h-full flex-col text-left"
-                    >
-                      {cardContent}
-                      <p className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-focus opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                        Watch demo <ArrowIcon className="size-3" />
-                      </p>
-                    </button>
-                  ) : (
-                    cardContent
-                  )}
-                </SpotlightCard>
-              </motion.div>
-            );
-          })}
+                </button>
+              </SpotlightCard>
+            </motion.div>
+          ))}
 
           {/* Upcoming card, same bento rhythm */}
           {upcoming.map((project, i) => (
