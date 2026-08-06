@@ -4,12 +4,16 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
 import SpotlightCard from "@/components/reactbits/SpotlightCard";
+import { Chip } from "@/components/ui/chip";
+import { ArrowIcon } from "@/components/ui/arrow-icon";
 
 interface Project {
   number: string;
   title: string;
   category: string;
   year: string;
+  status: "success" | "warn";
+  statusLabel: string;
   description: string;
   tags: string[];
   outcome: string;
@@ -23,6 +27,8 @@ const featured: Project[] = [
     title: "Fogarolli",
     category: "Web Application",
     year: "2025",
+    status: "success",
+    statusLabel: "Live",
     description:
       "A dual-app system built for a catering and events company. The inventory app runs on iPads at live events to track wagon contents in real time. The companion shift planner lets employees install it as a PWA, view upcoming shifts, and mark their availability — while the boss manages everything from an admin panel.",
     tags: ["React", "TypeScript", "Vite", "Supabase", "PWA"],
@@ -35,6 +41,8 @@ const featured: Project[] = [
     title: "Two Wheels Nordic",
     category: "Community Platform",
     year: "2025",
+    status: "success",
+    statusLabel: "Live",
     description:
       "A community forum for Nordic motorcyclists. Riders across Scandinavia connect, share routes and experiences, and discuss all things two wheels — organised by category with thread tracking, user authentication, and a privacy-first approach. No ads, no tracking.",
     tags: ["ASP.NET Core", "C#", "Blazor"],
@@ -87,7 +95,7 @@ function VideoModal({ src, onClose }: { src: string; onClose: () => void }) {
             Close ✕
           </button>
 
-          <div className="aspect-video w-full overflow-hidden rounded-sm border border-border bg-black">
+          <div className="aspect-video w-full overflow-hidden border border-border bg-black">
             {isEmbed ? (
               <iframe
                 src={embedSrc}
@@ -120,18 +128,18 @@ export function Work() {
         <VideoModal src={activeVideo} onClose={() => setActiveVideo(null)} />
       )}
 
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 lg:px-14">
         <div className="mb-20 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="font-display text-5xl font-bold leading-tight text-foreground lg:text-6xl"
+            className="headline-fluid font-display font-medium leading-tight text-foreground"
           >
             Selected
             <br />
-            <span className="text-ember">work.</span>
+            <span className="text-focus">work.</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 24 }}
@@ -145,46 +153,48 @@ export function Work() {
         </div>
 
         {/* Featured projects */}
-        <div className="flex flex-col gap-px">
+        <div className="grid gap-6 md:grid-cols-2">
           {featured.map((project, i) => {
             const cardContent = (
-              <div className="flex flex-col gap-10 lg:flex-row lg:gap-20">
-                <div className="flex flex-col gap-6 lg:w-1/2">
-                  <div className="flex items-center gap-4">
+              <div className="flex h-full flex-col gap-8">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
                     <span className="font-mono text-xs text-muted-foreground">
                       {project.number}
                     </span>
-                    <span className="h-px flex-1 bg-border" />
-                    <span className="font-mono text-xs text-ember">
+                    <span className="font-mono text-xs uppercase tracking-wide text-focus">
                       {project.category}
                     </span>
                   </div>
-                  <h3 className="font-display text-4xl font-bold text-foreground sm:text-5xl">
-                    {project.title}
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-sm border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                  <Chip status={project.status}>{project.statusLabel}</Chip>
                 </div>
-                <div className="flex flex-col justify-between gap-8 lg:w-1/2">
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {project.description}
-                  </p>
-                  <div className="flex items-center justify-between border-t border-border pt-6">
-                    <p className="text-xs italic text-muted-foreground/60">
-                      {project.outcome}
-                    </p>
-                    <span className="font-mono text-xs text-muted-foreground">
-                      {project.year}
+
+                <h3 className="font-display text-3xl font-medium text-foreground sm:text-4xl">
+                  {project.title}
+                </h3>
+
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                  {project.description}
+                </p>
+
+                <div className="flex flex-wrap gap-2">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
+                    >
+                      {tag}
                     </span>
-                  </div>
+                  ))}
+                </div>
+
+                <div className="mt-auto flex items-center justify-between border-t border-border pt-6">
+                  <p className="text-xs italic text-muted-foreground/70">
+                    {project.outcome}
+                  </p>
+                  <span className="font-mono text-xs text-muted-foreground">
+                    {project.year}
+                  </span>
                 </div>
               </div>
             );
@@ -200,29 +210,28 @@ export function Work() {
                   delay: i * 0.1,
                   ease: [0.25, 0.46, 0.45, 0.94],
                 }}
-                className="overflow-hidden"
               >
-                <SpotlightCard className="bg-card p-8 transition-colors duration-300 hover:bg-card/80 sm:p-12">
+                <SpotlightCard className="flex h-full flex-col border border-border bg-card p-8 transition-colors duration-300 sm:p-10">
                   {project.href ? (
                     <Link
                       href={project.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group block"
+                      className="group flex h-full flex-col"
                     >
                       {cardContent}
-                      <p className="mt-6 font-mono text-xs text-ember opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                        Visit site →
+                      <p className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-focus opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                        Visit site <ArrowIcon className="size-3" />
                       </p>
                     </Link>
                   ) : project.video ? (
                     <button
                       onClick={() => setActiveVideo(project.video!)}
-                      className="group block w-full text-left"
+                      className="group flex h-full flex-col text-left"
                     >
                       {cardContent}
-                      <p className="mt-6 font-mono text-xs text-ember opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                        Watch demo →
+                      <p className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-focus opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                        Watch demo <ArrowIcon className="size-3" />
                       </p>
                     </button>
                   ) : (
@@ -232,44 +241,38 @@ export function Work() {
               </motion.div>
             );
           })}
-        </div>
 
-        {/* Upcoming rows */}
-        <div className="divide-y divide-border border-t border-border">
+          {/* Upcoming card, same bento rhythm */}
           {upcoming.map((project, i) => (
             <motion.div
               key={project.number}
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{
                 duration: 0.6,
-                delay: i * 0.08,
+                delay: (featured.length + i) * 0.1,
                 ease: [0.25, 0.46, 0.45, 0.94],
               }}
-              className="flex items-center justify-between py-7 opacity-40"
+              className="flex flex-col justify-between border border-border bg-card p-8 opacity-50 sm:p-10"
             >
-              <div className="flex items-center gap-8">
-                <span className="font-mono text-xs text-muted-foreground">
-                  {project.number}
-                </span>
-                <div>
-                  <h3 className="text-base font-medium text-muted-foreground">
-                    {project.title}
-                  </h3>
-                  <p className="mt-1 font-mono text-xs text-muted-foreground/60">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <span className="font-mono text-xs text-muted-foreground">
+                    {project.number}
+                  </span>
+                  <span className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
                     {project.category}
-                  </p>
+                  </span>
                 </div>
+                <Chip status="warn">Upcoming</Chip>
               </div>
-              <div className="flex items-center gap-8">
-                <span className="hidden font-mono text-xs text-muted-foreground sm:block">
-                  {project.year}
-                </span>
-                <span className="rounded-sm border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground/60">
-                  upcoming
-                </span>
-              </div>
+              <h3 className="mt-8 font-display text-3xl font-medium text-muted-foreground sm:text-4xl">
+                {project.title}
+              </h3>
+              <span className="mt-8 font-mono text-xs text-muted-foreground">
+                {project.year}
+              </span>
             </motion.div>
           ))}
         </div>

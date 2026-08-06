@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Syne } from "next/font/google";
+import { Geist, Geist_Mono, Inter } from "next/font/google";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import "./globals.css";
 
@@ -13,10 +13,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const syne = Syne({
-  variable: "--font-syne",
+const interDisplay = Inter({
+  variable: "--font-inter-display",
   subsets: ["latin"],
-  weight: ["700", "800"],
+  weight: ["500"],
 });
 
 export const metadata: Metadata = {
@@ -40,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} dark`}
+      className={`${geistSans.variable} ${geistMono.variable} ${interDisplay.variable} dark`}
     >
       <body className="min-h-screen bg-background text-foreground antialiased">
         <SmoothScroll>{children}</SmoothScroll>

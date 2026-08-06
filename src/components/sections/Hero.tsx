@@ -7,6 +7,7 @@ import Link from "next/link";
 import BlurText from "@/components/reactbits/BlurText";
 import ShinyText from "@/components/reactbits/ShinyText";
 import Silk from "@/components/reactbits/Silk";
+import { ArrowIcon } from "@/components/ui/arrow-icon";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -38,14 +39,17 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative flex min-h-screen flex-col justify-between overflow-hidden pt-16">
+    <section className="relative flex h-[100svh] flex-col justify-between overflow-hidden">
       {/* Silk ambient background */}
       <div className="absolute inset-0 z-0 opacity-60">
         <Silk />
       </div>
 
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 pb-24 pt-24 lg:px-8">
-        <div className="max-w-5xl">
+      {/* Scrim overlay */}
+      <div className="scrim-b absolute inset-x-0 bottom-0 z-[1] h-[70%]" />
+
+      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 pb-24 pt-24 lg:px-14">
+        <div className="max-w-[752px]">
           <motion.div
             custom={0}
             variants={fadeUp}
@@ -69,7 +73,7 @@ export function Hero() {
             direction="bottom"
             delay={120}
             stepDuration={0.5}
-            className="font-display text-6xl font-bold leading-[0.95] tracking-tight text-foreground sm:text-7xl lg:text-[9rem]"
+            className="headline-fluid font-display font-medium leading-[1.05] text-white"
           />
 
           <motion.p
@@ -77,7 +81,7 @@ export function Hero() {
             variants={fadeUp}
             initial="hidden"
             animate="visible"
-            className="mt-10 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg"
+            className="mt-8 max-w-lg text-base leading-relaxed text-[#e7e7e7]"
           >
             Kova is a boutique studio crafting web applications, websites, and
             mobile experiences for businesses that care about quality.
@@ -92,16 +96,14 @@ export function Hero() {
           >
             <Link
               href="#work"
-              className="group inline-flex items-center gap-2 rounded-sm bg-ember px-6 py-3 text-sm font-medium text-background transition-all duration-200 hover:opacity-90"
+              className="btn-square group inline-flex items-center gap-2 bg-primary px-6 py-3 text-xl font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85"
             >
               See our work
-              <span className="transition-transform duration-200 group-hover:translate-x-1">
-                →
-              </span>
+              <ArrowIcon className="size-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
             <Link
               href="#contact"
-              className="inline-flex items-center gap-2 rounded-sm border border-border px-6 py-3 text-sm font-medium text-foreground transition-all duration-200 hover:border-ember hover:text-ember"
+              className="btn-square inline-flex items-center gap-2 border border-border px-6 py-3 text-xl font-medium text-foreground transition-all duration-200 hover:border-white/30 hover:bg-white/[0.03]"
             >
               Start a project
             </Link>
@@ -126,9 +128,9 @@ export function Hero() {
               ].map((item) => (
                 <span
                   key={item}
-                  className="flex items-center gap-12 text-sm uppercase tracking-widest text-muted-foreground"
+                  className="flex items-center gap-12 font-mono text-sm uppercase tracking-widest text-muted-foreground"
                 >
-                  <span className="text-ember">✦</span>
+                  <span className="text-focus">✦</span>
                   {item}
                 </span>
               ))}

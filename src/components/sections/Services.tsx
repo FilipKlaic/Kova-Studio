@@ -27,21 +27,28 @@ const services = [
   },
 ];
 
+const metrics = [
+  { value: "2", unit: "", label: "Founders, both hands-on" },
+  { value: "3", unit: "", label: "Core disciplines" },
+  { value: "2025", unit: "", label: "Studio founded" },
+  { value: "24", unit: "h", label: "Typical reply time" },
+];
+
 export function Services() {
   return (
     <section id="services" className="border-t border-border py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 lg:px-14">
         <div className="mb-20 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="font-display text-5xl font-bold leading-tight text-foreground lg:text-6xl"
+            className="headline-fluid font-display font-medium leading-tight text-foreground"
           >
             What we
             <br />
-            <span className="text-ember">build.</span>
+            <span className="text-focus">build.</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 24 }}
@@ -54,7 +61,7 @@ export function Services() {
           </motion.p>
         </div>
 
-        <div className="grid gap-px bg-border sm:grid-cols-3">
+        <div className="grid gap-px border border-border bg-border sm:grid-cols-3">
           {services.map((service, i) => (
             <motion.div
               key={service.number}
@@ -67,12 +74,12 @@ export function Services() {
                 ease: [0.25, 0.46, 0.45, 0.94],
               }}
             >
-              <SpotlightCard className="group relative flex h-full flex-col gap-8 bg-background p-8 transition-colors duration-300 hover:bg-card">
+              <SpotlightCard className="group relative flex h-full flex-col gap-8 bg-card p-8 transition-colors duration-300">
                 <span className="font-mono text-xs text-muted-foreground">
                   {service.number}
                 </span>
                 <div className="flex flex-col gap-4">
-                  <h3 className="text-xl font-semibold text-foreground">
+                  <h3 className="text-xl font-medium text-foreground">
                     {service.title}
                   </h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">
@@ -83,16 +90,48 @@ export function Services() {
                   {service.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-sm border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
+                      className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
                     >
                       {tag}
                     </span>
                   ))}
                 </div>
-                <span className="absolute bottom-8 right-8 text-ember opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <span className="absolute bottom-8 right-8 text-focus opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   →
                 </span>
               </SpotlightCard>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Metrics grid */}
+        <div className="mt-px grid border border-t-0 border-border sm:grid-cols-4">
+          {metrics.map((metric, i) => (
+            <motion.div
+              key={metric.label}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{
+                duration: 0.6,
+                delay: i * 0.08,
+                ease: [0.25, 0.46, 0.45, 0.94],
+              }}
+              className="flex flex-col gap-2 border-border p-8 sm:border-l sm:first:border-l-0"
+            >
+              <div className="flex items-baseline gap-1">
+                <span className="text-[56px] font-medium leading-none tracking-[-3.36px] text-foreground">
+                  {metric.value}
+                </span>
+                {metric.unit && (
+                  <span className="font-mono text-lg text-muted-foreground">
+                    {metric.unit}
+                  </span>
+                )}
+              </div>
+              <p className="font-mono text-xs text-muted-foreground">
+                {metric.label}
+              </p>
             </motion.div>
           ))}
         </div>

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { KovaLogo } from "@/components/layout/KovaLogo";
+import { ArrowIcon } from "@/components/ui/arrow-icon";
 
 const navLinks = [
   { label: "Work", href: "#work" },
@@ -30,32 +31,34 @@ export function Header() {
           : "bg-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
-        <Link href="/">
+      <div className="mx-auto grid w-full grid-cols-2 items-center px-6 pb-4 pt-[38px] md:grid-cols-3 lg:px-14">
+        <Link href="/" className="justify-self-start">
           <KovaLogo size="md" />
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center justify-center gap-8 md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="group relative text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="group relative text-base text-foreground/80 transition-colors hover:text-foreground"
             >
               {link.label}
-              <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-ember transition-all duration-300 group-hover:w-full" />
+              <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-focus transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
-          <Link
-            href="#contact"
-            className="ml-2 rounded-sm border border-border px-4 py-1.5 text-sm text-foreground transition-all duration-200 hover:border-ember hover:text-ember"
-          >
-            Get in touch →
-          </Link>
         </nav>
 
+        <Link
+          href="#contact"
+          className="btn-square group hidden items-center gap-1.5 justify-self-end bg-primary px-3 py-2 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85 md:inline-flex"
+        >
+          Book a call
+          <ArrowIcon className="size-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+        </Link>
+
         <button
-          className="flex flex-col items-end gap-1.5 md:hidden"
+          className="flex flex-col items-end gap-1.5 justify-self-end md:hidden"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -74,29 +77,43 @@ export function Header() {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="border-b border-border bg-background md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 top-0 z-40 flex h-svh w-full flex-col justify-center bg-background md:hidden"
           >
-            <nav className="flex flex-col px-6 py-6 gap-6">
-              {navLinks.map((link) => (
-                <Link
+            <nav className="flex flex-col gap-8 px-10">
+              {navLinks.map((link, i) => (
+                <motion.div
                   key={link.href}
-                  href={link.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="text-lg text-muted-foreground transition-colors hover:text-foreground"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.05 }}
                 >
-                  {link.label}
-                </Link>
+                  <Link
+                    href={link.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="font-display text-4xl text-foreground"
+                  >
+                    {link.label}
+                  </Link>
+                </motion.div>
               ))}
-              <Link
-                href="#contact"
-                onClick={() => setMenuOpen(false)}
-                className="inline-flex w-fit rounded-sm border border-border px-4 py-2 text-sm text-foreground hover:border-ember hover:text-ember"
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: navLinks.length * 0.05 }}
               >
-                Get in touch →
-              </Link>
+                <Link
+                  href="#contact"
+                  onClick={() => setMenuOpen(false)}
+                  className="btn-square mt-4 inline-flex items-center gap-1.5 bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
+                >
+                  Book a call
+                  <ArrowIcon className="size-3" />
+                </Link>
+              </motion.div>
             </nav>
           </motion.div>
         )}

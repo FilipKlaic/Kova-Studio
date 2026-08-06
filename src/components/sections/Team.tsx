@@ -21,18 +21,18 @@ const team = [
 export function Team() {
   return (
     <section id="team" className="border-t border-border py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 lg:px-14">
         <div className="mb-20 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <motion.h2
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="font-display text-5xl font-bold leading-tight text-foreground lg:text-6xl"
+            className="headline-fluid font-display font-medium leading-tight text-foreground"
           >
             The
             <br />
-            <span className="text-ember">studio.</span>
+            <span className="text-focus">studio.</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 24 }}
@@ -45,7 +45,7 @@ export function Team() {
           </motion.p>
         </div>
 
-        <div className="grid gap-px bg-border sm:grid-cols-2">
+        <div className="grid gap-px border border-border bg-border sm:grid-cols-2">
           {team.map((member, i) => (
             <motion.div
               key={member.name}
@@ -57,16 +57,16 @@ export function Team() {
                 delay: i * 0.1,
                 ease: [0.25, 0.46, 0.45, 0.94],
               }}
-              className="flex flex-col gap-6 bg-background p-8"
+              className="flex flex-col gap-6 bg-card p-8"
             >
-              <div className="flex h-16 w-16 items-center justify-center rounded-sm bg-ember/20 ring-1 ring-ember/40">
-                <span className="font-display text-xl font-bold text-ember">
+              <div className="flex h-16 w-16 items-center justify-center border border-focus/40 bg-focus/10">
+                <span className="font-display text-xl font-medium text-focus">
                   {member.name[0]}
                 </span>
               </div>
               <div className="flex flex-col gap-1">
-                <h3 className="font-semibold text-foreground">{member.name}</h3>
-                <p className="font-mono text-xs text-ember">{member.role}</p>
+                <h3 className="font-medium text-foreground">{member.name}</h3>
+                <p className="font-mono text-xs text-focus">{member.role}</p>
               </div>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {member.bio}
@@ -76,7 +76,7 @@ export function Team() {
                   href={member.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-fit font-mono text-xs text-muted-foreground/60 transition-colors hover:text-ember"
+                  className="w-fit font-mono text-xs text-muted-foreground/60 transition-colors hover:text-focus"
                 >
                   GitHub →
                 </Link>

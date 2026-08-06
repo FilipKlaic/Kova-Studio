@@ -2,6 +2,7 @@
 
 import { motion } from "motion/react";
 import Link from "next/link";
+import { ArrowIcon } from "@/components/ui/arrow-icon";
 
 export function Contact() {
   return (
@@ -9,7 +10,7 @@ export function Contact() {
       id="contact"
       className="border-t border-border py-32"
     >
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-6 lg:px-14">
         <div className="flex flex-col gap-16 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <motion.p
@@ -26,13 +27,14 @@ export function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="font-display text-5xl font-bold leading-tight text-foreground lg:text-7xl"
+              className="headline-fluid font-display font-medium leading-tight text-foreground"
+              style={{ fontSize: "clamp(2rem, 1.2rem + 5vw, 4.5rem)" }}
             >
               Ready to build
               <br />
               something
               <br />
-              <span className="text-ember">great?</span>
+              <span className="text-focus">great?</span>
             </motion.h2>
           </div>
 
@@ -50,19 +52,17 @@ export function Contact() {
             <div className="flex flex-col gap-3">
               <Link
                 href="mailto:file.klaic@gmail.com"
-                className="group inline-flex items-center gap-2 rounded-sm bg-ember px-6 py-3 text-sm font-medium text-background transition-all duration-200 hover:opacity-90"
+                className="btn-square group inline-flex items-center gap-2 bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85"
               >
                 file.klaic@gmail.com
-                <span className="transition-transform duration-200 group-hover:translate-x-1">
-                  →
-                </span>
+                <ArrowIcon className="size-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Link>
               <div className="flex items-center gap-4">
                 <Link
                   href="https://github.com/FilipKlaic"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-mono text-xs text-muted-foreground/60 transition-colors hover:text-ember"
+                  className="font-mono text-xs text-muted-foreground/60 transition-colors hover:text-focus"
                 >
                   GitHub →
                 </Link>
