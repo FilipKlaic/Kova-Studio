@@ -9,12 +9,14 @@ const team = [
     role: "Co-founder & Developer",
     bio: "Full-stack developer specialising in TypeScript, React, and scalable backend systems. Builds tools people actually want to use.",
     github: "https://github.com/FilipKlaic",
+    portfolio: "https://portfolio-gamma-lime-43.vercel.app/",
   },
   {
     name: "Oliver Martinsson",
     role: "Co-founder & Developer",
     bio: "Full-stack developer with a focus on .NET and modern web platforms. Brings backend depth and a sharp eye for community-driven products.",
     github: null,
+    portfolio: null,
   },
 ];
 
@@ -71,15 +73,29 @@ export function Team() {
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {member.bio}
               </p>
-              {member.github && (
-                <Link
-                  href={member.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-fit font-mono text-xs text-muted-foreground/60 transition-colors hover:text-focus"
-                >
-                  GitHub →
-                </Link>
+              {(member.github || member.portfolio) && (
+                <div className="flex items-center gap-4">
+                  {member.github && (
+                    <Link
+                      href={member.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-fit font-mono text-xs text-muted-foreground/60 transition-colors hover:text-focus"
+                    >
+                      GitHub →
+                    </Link>
+                  )}
+                  {member.portfolio && (
+                    <Link
+                      href={member.portfolio}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-fit font-mono text-xs text-muted-foreground/60 transition-colors hover:text-focus"
+                    >
+                      Portfolio →
+                    </Link>
+                  )}
+                </div>
               )}
             </motion.div>
           ))}
