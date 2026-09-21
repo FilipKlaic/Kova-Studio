@@ -1,141 +1,87 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import { motion } from "motion/react";
-import gsap from "gsap";
 import Link from "next/link";
-import BlurText from "@/components/reactbits/BlurText";
-import ShinyText from "@/components/reactbits/ShinyText";
-import Silk from "@/components/reactbits/Silk";
 import { ArrowIcon } from "@/components/ui/arrow-icon";
+import { HeroIllustration } from "@/components/illustrations/HeroIllustration";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.7,
-      delay: i * 0.12,
-      ease: [0.25, 0.46, 0.45, 0.94] as const,
-    },
-  }),
-};
+const recentProjects = ["Fogarolli", "Atrium", "Meridian", "BT-7274"];
 
 export function Hero() {
-  const marqueRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!marqueRef.current) return;
-    const ctx = gsap.context(() => {
-      gsap.to(".marquee-inner", {
-        xPercent: -50,
-        duration: 24,
-        ease: "none",
-        repeat: -1,
-      });
-    }, marqueRef);
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section className="relative flex h-[100svh] flex-col justify-between overflow-hidden">
-      {/* Silk ambient background */}
-      <div className="absolute inset-0 z-0 opacity-60">
-        <Silk />
-      </div>
+    <section className="overflow-hidden pt-28 sm:pt-36">
+      <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-12 lg:gap-10 lg:px-14">
+        <div className="lg:col-span-7">
+          <p className="rise-in inline-flex items-center gap-2.5 text-sm text-muted-foreground">
+            <span className="size-1.5 rounded-full bg-focus" />
+            Design &amp; engineering consultancy
+          </p>
 
-      {/* Scrim overlay */}
-      <div className="scrim-b absolute inset-x-0 bottom-0 z-[1] h-[70%]" />
-
-      <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 pb-24 pt-24 lg:px-14">
-        <div className="max-w-[752px]">
-          <motion.div
-            custom={0}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="mb-8"
+          <h1
+            className="rise-in headline-hero mt-6 font-display text-foreground"
+            style={{ animationDelay: "80ms" }}
           >
-            <ShinyText
-              text="Studio — Est. 2025"
-              className="font-mono text-sm uppercase tracking-widest"
-              color="#3f3f4f"
-              shineColor="#a0a0c0"
-              speed={4}
-            />
-          </motion.div>
+            Software built around how your business{" "}
+            <span className="relative inline-block whitespace-nowrap italic">
+              actually works.
+              <svg
+                viewBox="0 0 300 18"
+                className="absolute left-0 top-[88%] h-auto w-full text-focus"
+                aria-hidden="true"
+              >
+                <path
+                  className="draw-line"
+                  pathLength={100}
+                  d="M4 11 C44 5 84 14 124 9 S204 4 244 9 S286 12 296 7"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={4}
+                  strokeLinecap="round"
+                  filter="url(#sketch)"
+                />
+              </svg>
+            </span>
+          </h1>
 
-          <BlurText
-            text="Digital products built to last."
-            tag="h1"
-            animateBy="words"
-            direction="bottom"
-            delay={120}
-            stepDuration={0.5}
-            className="headline-fluid font-display font-medium leading-[1.05] text-white"
-          />
-
-          <motion.p
-            custom={3}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="mt-8 max-w-lg text-base leading-relaxed text-[#e7e7e7]"
+          <p
+            className="rise-in mt-8 max-w-xl text-lg leading-relaxed text-muted-foreground"
+            style={{ animationDelay: "160ms" }}
           >
-            Kova is a boutique studio crafting web applications, websites, and
-            mobile experiences for businesses that care about quality.
-          </motion.p>
+            Kova is an independent consultancy run by Filip Klaic. I plan,
+            design and build the tools, apps and websites your business runs
+            on, and you work with me directly from the first call to launch.
+          </p>
 
-          <motion.div
-            custom={4}
-            variants={fadeUp}
-            initial="hidden"
-            animate="visible"
-            className="mt-12 flex flex-wrap items-center gap-4"
+          <div
+            className="rise-in mt-10 flex flex-wrap items-center gap-x-8 gap-y-4"
+            style={{ animationDelay: "240ms" }}
           >
             <Link
-              href="#work"
-              className="btn-square group inline-flex items-center gap-2 bg-primary px-6 py-3 text-xl font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85"
+              href="#contact"
+              className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-base font-medium text-primary-foreground transition-colors hover:bg-primary/85"
             >
-              See our work
+              Book an intro call
               <ArrowIcon className="size-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </Link>
             <Link
-              href="#contact"
-              className="btn-square inline-flex items-center gap-2 border border-border px-6 py-3 text-xl font-medium text-foreground transition-all duration-200 hover:border-white/30 hover:bg-white/[0.03]"
+              href="#work"
+              className="text-base font-medium text-foreground underline decoration-input decoration-2 underline-offset-[6px] transition-colors hover:decoration-foreground"
             >
-              Start a project
+              See our work
             </Link>
-          </motion.div>
+          </div>
+        </div>
+
+        <div className="rise-in lg:col-span-5" style={{ animationDelay: "200ms" }}>
+          <HeroIllustration className="mx-auto w-full max-w-[540px]" />
         </div>
       </div>
 
-      <div
-        ref={marqueRef}
-        className="relative z-10 border-t border-border py-5 overflow-hidden"
-      >
-        <div className="marquee-inner flex whitespace-nowrap">
-          {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="flex shrink-0 items-center gap-12 pr-12">
-              {[
-                "Web Applications",
-                "Websites",
-                "Mobile Apps",
-                "UI / UX Design",
-                "Brand Identity",
-                "E-Commerce",
-              ].map((item) => (
-                <span
-                  key={item}
-                  className="flex items-center gap-12 font-mono text-sm uppercase tracking-widest text-muted-foreground"
-                >
-                  <span className="text-focus">✦</span>
-                  {item}
-                </span>
-              ))}
-            </div>
-          ))}
+      <div className="mx-auto mt-16 max-w-7xl px-6 lg:mt-20 lg:px-14">
+        <div className="flex flex-col gap-3 border-t border-border py-8 sm:flex-row sm:items-baseline sm:gap-12">
+          <p className="text-sm text-muted-foreground">Recent projects</p>
+          <ul className="flex flex-wrap gap-x-10 gap-y-2 font-display text-xl text-foreground/80">
+            {recentProjects.map((name) => (
+              <li key={name}>{name}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

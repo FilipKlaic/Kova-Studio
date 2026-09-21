@@ -1,409 +1,282 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { useEffect, useRef, useState, type ComponentType } from "react";
 import Link from "next/link";
-import SpotlightCard from "@/components/reactbits/SpotlightCard";
-import { Chip } from "@/components/ui/chip";
 import { ArrowIcon } from "@/components/ui/arrow-icon";
+import {
+  AssistantSketch,
+  AtriumSketch,
+  FogarolliSketch,
+  MeridianSketch,
+  SavingsSketch,
+} from "@/components/illustrations/ProjectIllustrations";
 
 interface Project {
-  number: string;
   title: string;
-  category: string;
-  year: string;
-  status: "success" | "warn";
-  statusLabel: string;
+  kind: string;
+  summary: string;
   description: string;
   highlights: string[];
-  tags: string[];
-  outcome: string;
-  href?: string | null;
-  video?: string | null;
+  stack: string[];
+  repo: string;
+  Illustration: ComponentType<{ className?: string }>;
 }
 
-const featured: Project[] = [
+const fogarolli = {
+  title: "Fogarolli",
+  kind: "Catering & events · In daily use",
+  description:
+    "Two connected apps for a catering and events company. An inventory app runs on iPads at live events so staff can see what's in every wagon in real time. A companion shift planner lets employees check their shifts and mark availability from their phones, while managers run both from one admin panel.",
+  highlights: [
+    "Live stock counts across wagons, synced between iPads during service",
+    "Shift planner installs on staff phones like a native app",
+    "Role-based access, so managers and staff each see what they need",
+  ],
+  stack: ["TypeScript", "React", "Vite", "Supabase", "PWA"],
+};
+
+const products: Project[] = [
   {
-    number: "001",
-    title: "Fogarolli",
-    category: "Web Application",
-    year: "2025",
-    status: "success",
-    statusLabel: "Live",
+    title: "Atrium",
+    kind: "Real-time chat",
+    summary:
+      "A Slack- and Discord-style chat app with a native desktop client and a real-time backend.",
     description:
-      "A dual-app system built for a catering and events company. The inventory app runs on iPads at live events to track wagon contents in real time. The companion shift planner lets employees install it as a PWA, view upcoming shifts, and mark their availability — while the boss manages everything from an admin panel.",
+      "A cross-platform chat application with servers, channels and role-based membership. The desktop client runs natively on macOS and Windows, backed by an API and WebSocket server built from scratch.",
     highlights: [
-      "iPad inventory app tracks wagon stock live, on-site, during events",
-      "Shift planner installs as a PWA so staff can check shifts from their phone",
-      "Admin panel gives the owner full oversight across both apps",
+      "Real-time messaging over WebSockets with presence and typing indicators",
+      "Tauri desktop client for macOS and Windows, with credentials kept in the OS keychain",
+      "Fastify and PostgreSQL backend with rotating refresh tokens and Argon2 password hashing",
     ],
-    tags: ["React", "TypeScript", "Vite", "Supabase", "PWA"],
-    outcome: "Used daily at live events across multiple wagons.",
-    href: null,
-    video: null, // drop your video URL or path here, e.g. "/videos/fogarolli.mp4"
+    stack: ["Tauri", "React", "TypeScript", "Fastify", "PostgreSQL", "Drizzle"],
+    repo: "https://github.com/FilipKlaic/Atrium",
+    Illustration: AtriumSketch,
   },
   {
-    number: "002",
-    title: "Two Wheels Nordic",
-    category: "Community Platform",
-    year: "2025",
-    status: "success",
-    statusLabel: "Live",
+    title: "Meridian",
+    kind: "Developer tool",
+    summary:
+      "A desktop app that maps how a TypeScript codebase fits together, file by file and function by function.",
     description:
-      "A community forum for Nordic motorcyclists. Riders across Scandinavia connect, share routes and experiences, and discuss all things two wheels — organised by category with thread tracking, user authentication, and a privacy-first approach. No ads, no tracking.",
+      "Point Meridian at a project folder and it charts which files import which and which functions call which, with the source behind every node one click away.",
     highlights: [
-      "Category-organised forum for route sharing and rider discussion",
-      "Thread tracking and user authentication built on ASP.NET Core",
-      "Privacy-first by design — no ads, no tracking, ever",
+      "Rust backend that parses imports, re-exports and path aliases with tree-sitter",
+      "Interactive import and call graphs, colour-coded by directory, with a focus mode",
+      "Scans cached in SQLite, so reopening a project is instant",
     ],
-    tags: ["ASP.NET Core", "C#", "Blazor"],
-    outcome: "Live and open to the Nordic riding community.",
-    href: "https://www.twowheelsnordic.se",
-    video: null,
+    stack: ["Rust", "Tauri", "React", "TypeScript", "tree-sitter", "SQLite"],
+    repo: "https://github.com/FilipKlaic/Meridian",
+    Illustration: MeridianSketch,
+  },
+  {
+    title: "BT-7274",
+    kind: "Voice AI assistant",
+    summary:
+      "A voice assistant with its own personality that listens, talks back, uses tools and remembers you between sessions.",
+    description:
+      "An AI agent you talk to from the terminal, typed or out loud. It answers in its own voice, checks the weather, sets timers, reports on your machine and keeps a memory of past conversations.",
+    highlights: [
+      "Speech is transcribed locally, so only text is sent to the language model",
+      "Tool use for weather, timers, system status and opening apps",
+      "Runs on Gemini, or fully offline with a local model through Ollama",
+    ],
+    stack: ["Python", "Gemini", "Ollama", "Piper", "faster-whisper"],
+    repo: "https://github.com/FilipKlaic/BT-AI-agent",
+    Illustration: AssistantSketch,
+  },
+  {
+    title: "Savings Tracker",
+    kind: "Personal finance",
+    summary:
+      "A desktop app for tracking income and expenses that sets aside a share of every payment toward savings goals.",
+    description:
+      "Log income and expenses, set a savings rule, and watch named goals fill up. Everything is stored locally, with a dashboard that shows where the month went.",
+    highlights: [
+      "Monthly dashboard with a spending breakdown and a savings-rate trend",
+      "Local SQLite storage with migrations applied on first launch",
+      "Feature-sliced structure, so new features don't touch existing ones",
+    ],
+    stack: ["Rust", "Tauri", "React", "TypeScript", "SQLite"],
+    repo: "https://github.com/FilipKlaic/Savings-tracker",
+    Illustration: SavingsSketch,
   },
 ];
 
-const upcoming = [
-  { number: "003", title: "Coming Soon", category: "Mobile App", year: "2025" },
-];
-
-function VideoModal({ src, onClose }: { src: string; onClose: () => void }) {
-  const isEmbed =
-    src.includes("youtube.com") ||
-    src.includes("youtu.be") ||
-    src.includes("vimeo.com");
-
-  const embedSrc = src.includes("youtu.be")
-    ? src.replace("youtu.be/", "www.youtube.com/embed/")
-    : src.includes("youtube.com/watch?v=")
-    ? src.replace("watch?v=", "embed/")
-    : src;
-
+function Check() {
   return (
-    <AnimatePresence>
-      <motion.div
-        key="modal-backdrop"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm"
-        onClick={onClose}
-      >
-        <motion.div
-          key="modal-content"
-          initial={{ opacity: 0, scale: 0.95, y: 16 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 16 }}
-          transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="relative w-full max-w-4xl"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <button
-            onClick={onClose}
-            className="absolute -top-10 right-0 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Close ✕
-          </button>
-
-          <div className="aspect-video w-full overflow-hidden border border-border bg-black">
-            {isEmbed ? (
-              <iframe
-                src={embedSrc}
-                className="h-full w-full"
-                allow="autoplay; fullscreen"
-                allowFullScreen
-              />
-            ) : (
-              <video
-                src={src}
-                className="h-full w-full"
-                controls
-                autoPlay
-                playsInline
-              />
-            )}
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
+    <svg viewBox="0 0 16 16" className="mt-1 size-4 shrink-0 text-focus" aria-hidden="true">
+      <path
+        d="M3 8.6 L6.6 12 L13 4.6"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.8}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
-function ProjectModal({
+function Highlights({ items }: { items: string[] }) {
+  return (
+    <ul className="space-y-2.5">
+      {items.map((item) => (
+        <li key={item} className="flex gap-3 text-[15px] leading-relaxed text-foreground">
+          <Check />
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function Stack({ items }: { items: string[] }) {
+  return <p className="text-sm text-muted-foreground">{items.join(" · ")}</p>;
+}
+
+function ProjectDialog({
   project,
   onClose,
-  onWatchDemo,
 }: {
-  project: Project;
+  project: Project | null;
   onClose: () => void;
-  onWatchDemo: (src: string) => void;
 }) {
+  const ref = useRef<HTMLDialogElement>(null);
+
+  useEffect(() => {
+    if (project && !ref.current?.open) ref.current?.showModal();
+  }, [project]);
+
   return (
-    <AnimatePresence>
-      <motion.div
-        key="project-modal-backdrop"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/80 p-4 backdrop-blur-sm sm:items-center"
-        onClick={onClose}
-      >
-        <motion.div
-          key="project-modal-content"
-          initial={{ opacity: 0, scale: 0.95, y: 16 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 16 }}
-          transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="relative my-8 w-full max-w-2xl border border-border bg-card p-8 sm:p-10"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <button
-            onClick={onClose}
-            className="absolute right-6 top-6 font-mono text-xs text-muted-foreground transition-colors hover:text-foreground sm:right-8 sm:top-8"
-            aria-label="Close"
-          >
-            Close ✕
-          </button>
-
-          <div className="flex items-center justify-between gap-4 pr-16">
-            <div className="flex items-center gap-3">
-              <span className="font-mono text-xs text-muted-foreground">
-                {project.number}
-              </span>
-              <span className="font-mono text-xs uppercase tracking-wide text-focus">
-                {project.category}
-              </span>
-            </div>
-            <Chip status={project.status}>{project.statusLabel}</Chip>
+    <dialog
+      ref={ref}
+      onClose={onClose}
+      onClick={(e) => e.target === ref.current && ref.current.close()}
+      aria-labelledby="project-dialog-title"
+      className="m-auto w-[min(640px,calc(100%-2rem))] max-h-[calc(100svh-2rem)] rounded-2xl border border-border bg-card p-0 text-foreground backdrop:bg-foreground/25"
+    >
+      {project && (
+        <div className="p-7 sm:p-10">
+          <div className="flex items-start justify-between gap-6">
+            <p className="text-sm text-muted-foreground">{project.kind}</p>
+            <button
+              onClick={() => ref.current?.close()}
+              className="-mr-2 -mt-2 rounded-full px-2 py-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Close
+            </button>
           </div>
-
-          <h3 className="mt-6 font-display text-3xl font-medium text-foreground sm:text-4xl">
+          <h3 id="project-dialog-title" className="mt-3 font-display text-4xl">
             {project.title}
           </h3>
-
-          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+          <p className="mt-5 leading-relaxed text-muted-foreground">
             {project.description}
           </p>
-
-          <div className="mt-8">
-            <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
-              What it&apos;s used for
-            </p>
-            <ul className="mt-4 flex flex-col gap-3">
-              {project.highlights.map((point) => (
-                <li
-                  key={point}
-                  className="flex items-start gap-2.5 text-sm leading-relaxed text-foreground/90"
-                >
-                  <span className="mt-1.5 size-1.5 shrink-0 bg-focus" />
-                  {point}
-                </li>
-              ))}
-            </ul>
+          <div className="mt-7">
+            <Highlights items={project.highlights} />
           </div>
-
-          <div className="mt-8">
-            <p className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
-              Tech stack
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+          <div className="mt-8 flex flex-col gap-5 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <Stack items={project.stack} />
+            <Link
+              href={project.repo}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex shrink-0 items-center gap-2 self-start rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85"
+            >
+              View on GitHub
+              <ArrowIcon className="size-2.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </Link>
           </div>
-
-          <div className="mt-8 flex flex-col gap-6 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-start sm:gap-1">
-              <p className="text-xs italic text-muted-foreground/70">
-                {project.outcome}
-              </p>
-              <span className="font-mono text-xs text-muted-foreground">
-                {project.year}
-              </span>
-            </div>
-
-            {project.href ? (
-              <Link
-                href={project.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-square group inline-flex items-center justify-center gap-1.5 bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85"
-              >
-                Visit live site
-                <ArrowIcon className="size-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Link>
-            ) : project.video ? (
-              <button
-                onClick={() => onWatchDemo(project.video!)}
-                className="btn-square group inline-flex items-center justify-center gap-1.5 bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground transition-all duration-200 hover:bg-primary/85"
-              >
-                Watch demo
-                <ArrowIcon className="size-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </button>
-            ) : null}
-          </div>
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
+        </div>
+      )}
+    </dialog>
   );
 }
 
 export function Work() {
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
-  const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [active, setActive] = useState<Project | null>(null);
 
   return (
-    <section id="work" className="border-t border-border py-32">
-      {activeProject && (
-        <ProjectModal
-          project={activeProject}
-          onClose={() => setActiveProject(null)}
-          onWatchDemo={(src) => {
-            setActiveProject(null);
-            setActiveVideo(src);
-          }}
-        />
-      )}
-      {activeVideo && (
-        <VideoModal src={activeVideo} onClose={() => setActiveVideo(null)} />
-      )}
-
+    <section id="work" className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-14">
-        <div className="mb-20 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="headline-fluid font-display font-medium leading-tight text-foreground"
-          >
-            Selected
-            <br />
-            <span className="text-focus">work.</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="max-w-xs text-sm leading-relaxed text-muted-foreground"
-          >
-            Real tools built for real businesses. More projects on the way.
-          </motion.p>
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
+            <p className="text-sm text-muted-foreground">Selected work</p>
+            <h2 className="headline-fluid mt-4 font-display text-foreground">
+              Software in production, <em>and products of my own.</em>
+            </h2>
+          </div>
+          <p className="max-w-md text-lg leading-relaxed text-muted-foreground lg:col-span-5 lg:justify-self-end">
+            Alongside client work I build my own products. It&apos;s where I
+            try new tools properly before they go anywhere near yours.
+          </p>
         </div>
 
-        {/* Featured projects */}
-        <div className="grid gap-6 md:grid-cols-2">
-          {featured.map((project, i) => (
-            <motion.div
-              key={project.number}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.7,
-                delay: i * 0.1,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
+        {/* Featured project */}
+        <article className="mt-16 grid overflow-hidden rounded-2xl border border-border bg-card [--sketch-paper:var(--card)] lg:grid-cols-2">
+          <div className="p-7 sm:p-10 lg:p-12">
+            <p className="text-sm text-muted-foreground">{fogarolli.kind}</p>
+            <h3 className="mt-3 font-display text-4xl text-foreground sm:text-5xl">
+              {fogarolli.title}
+            </h3>
+            <p className="mt-5 leading-relaxed text-muted-foreground">
+              {fogarolli.description}
+            </p>
+            <div className="mt-8">
+              <Highlights items={fogarolli.highlights} />
+            </div>
+            <div className="mt-8 border-t border-border pt-6">
+              <Stack items={fogarolli.stack} />
+            </div>
+          </div>
+          <div className="flex items-center justify-center bg-paper-deep px-6 py-10 sm:px-10">
+            <FogarolliSketch className="w-full max-w-[460px]" />
+          </div>
+        </article>
+
+        {/* Own products */}
+        <ul className="mt-5 grid gap-5 md:grid-cols-2">
+          {products.map((project) => (
+            <li
+              key={project.title}
+              className="group relative flex gap-6 rounded-2xl border border-border bg-card p-7 transition-colors [--sketch-paper:var(--card)] hover:border-input sm:p-8"
             >
-              <SpotlightCard className="h-full border border-border bg-card transition-colors duration-300">
-                <button
-                  onClick={() => setActiveProject(project)}
-                  className="group flex h-full w-full flex-col p-8 text-left sm:p-10"
-                >
-                  <div className="flex h-full flex-col gap-8">
-                    <div className="flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono text-xs text-muted-foreground">
-                          {project.number}
-                        </span>
-                        <span className="font-mono text-xs uppercase tracking-wide text-focus">
-                          {project.category}
-                        </span>
-                      </div>
-                      <Chip status={project.status}>{project.statusLabel}</Chip>
-                    </div>
-
-                    <h3 className="font-display text-3xl font-medium text-foreground sm:text-4xl">
-                      {project.title}
-                    </h3>
-
-                    <p className="text-sm leading-relaxed text-muted-foreground">
-                      {project.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    <div className="mt-auto flex items-center justify-between border-t border-border pt-6">
-                      <p className="text-xs italic text-muted-foreground/70">
-                        {project.outcome}
-                      </p>
-                      <span className="font-mono text-xs text-muted-foreground">
-                        {project.year}
-                      </span>
-                    </div>
-                  </div>
-
-                  <p className="mt-4 inline-flex items-center gap-1 font-mono text-xs text-focus opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                    View details <ArrowIcon className="size-3" />
-                  </p>
-                </button>
-              </SpotlightCard>
-            </motion.div>
-          ))}
-
-          {/* Upcoming card, same bento rhythm */}
-          {upcoming.map((project, i) => (
-            <motion.div
-              key={project.number}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.6,
-                delay: (featured.length + i) * 0.1,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
-              className="flex flex-col justify-between border border-border bg-card p-8 opacity-50 sm:p-10"
-            >
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <span className="font-mono text-xs text-muted-foreground">
-                    {project.number}
+              <project.Illustration className="hidden h-20 w-auto shrink-0 sm:block" />
+              <div className="flex min-w-0 flex-1 flex-col">
+                <p className="text-sm text-muted-foreground">{project.kind}</p>
+                <h3 className="mt-1.5 font-display text-2xl text-foreground">
+                  <button
+                    onClick={() => setActive(project)}
+                    className="text-left after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-ring"
+                    aria-haspopup="dialog"
+                  >
+                    {project.title}
+                  </button>
+                </h3>
+                <p className="mt-2 leading-relaxed text-muted-foreground">
+                  {project.summary}
+                </p>
+                <div className="mt-auto flex items-center gap-6 pt-6 text-sm font-medium">
+                  <span className="text-foreground underline decoration-input decoration-2 underline-offset-[5px] transition-colors group-hover:decoration-foreground">
+                    Read more
                   </span>
-                  <span className="font-mono text-xs uppercase tracking-wide text-muted-foreground">
-                    {project.category}
-                  </span>
+                  <Link
+                    href={project.repo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="relative z-10 inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    GitHub
+                    <ArrowIcon className="size-2.5" />
+                  </Link>
                 </div>
-                <Chip status="warn">Upcoming</Chip>
               </div>
-              <h3 className="mt-8 font-display text-3xl font-medium text-muted-foreground sm:text-4xl">
-                {project.title}
-              </h3>
-              <span className="mt-8 font-mono text-xs text-muted-foreground">
-                {project.year}
-              </span>
-            </motion.div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
+
+      <ProjectDialog project={active} onClose={() => setActive(null)} />
     </section>
   );
 }

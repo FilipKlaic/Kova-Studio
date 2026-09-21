@@ -1,139 +1,99 @@
-"use client";
-
-import { motion } from "motion/react";
-import SpotlightCard from "@/components/reactbits/SpotlightCard";
+import Link from "next/link";
+import { ArrowIcon } from "@/components/ui/arrow-icon";
+import {
+  AISketch,
+  DesktopSketch,
+  MobileSketch,
+  PortalSketch,
+  WebAppSketch,
+  WebsiteSketch,
+} from "@/components/illustrations/ServiceIllustrations";
 
 const services = [
   {
-    number: "01",
-    title: "Web Applications",
+    title: "Internal tools",
+    Illustration: WebAppSketch,
     description:
-      "Custom tools and platforms built for your workflow. From internal dashboards to customer-facing SaaS products, we build scalable apps that handle real complexity.",
-    tags: ["React", "TypeScript", "Node.js", "Supabase"],
+      "Replace spreadsheets, paper lists and group chats with a tool shaped around how your team works: inventory, scheduling, admin panels and dashboards.",
   },
   {
-    number: "02",
+    title: "Web applications",
+    Illustration: PortalSketch,
+    description:
+      "Customer portals, booking systems and SaaS products, with accounts, roles, live updates and a solid backend underneath.",
+  },
+  {
     title: "Websites",
+    Illustration: WebsiteSketch,
     description:
-      "Fast, SEO-optimized sites that convert visitors into clients. Marketing pages, portfolios, landing pages — designed to perform and built to be maintained.",
-    tags: ["Next.js", "Tailwind", "CMS", "Analytics"],
+      "Fast company sites and landing pages that explain what you do clearly, show up in search and are easy to keep up to date.",
   },
   {
-    number: "03",
-    title: "Mobile Apps",
+    title: "Mobile apps",
+    Illustration: MobileSketch,
     description:
-      "Native-quality mobile experiences on iOS and Android. Cross-platform development that doesn't compromise on feel or performance.",
-    tags: ["React Native", "Expo", "iOS", "Android"],
+      "Apps your staff or customers install straight to their home screen, on iOS and Android, from a single codebase.",
   },
-];
-
-const metrics = [
-  { value: "2", unit: "", label: "Founders, both hands-on" },
-  { value: "3", unit: "", label: "Core disciplines" },
-  { value: "2025", unit: "", label: "Studio founded" },
-  { value: "24", unit: "h", label: "Typical reply time" },
+  {
+    title: "Desktop software",
+    Illustration: DesktopSketch,
+    description:
+      "Native apps for macOS and Windows that keep your data on your own machines and stay quick with lots of it.",
+  },
+  {
+    title: "AI assistants & automation",
+    Illustration: AISketch,
+    description:
+      "Assistants that work with your own data and tools, voice interfaces, and automations that take repetitive work off your plate.",
+  },
 ];
 
 export function Services() {
   return (
-    <section id="services" className="border-t border-border py-32">
+    <section id="services" className="py-24 sm:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-14">
-        <div className="mb-20 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="headline-fluid font-display font-medium leading-tight text-foreground"
-          >
-            What we
-            <br />
-            <span className="text-focus">build.</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="max-w-xs text-sm leading-relaxed text-muted-foreground"
-          >
-            Three core disciplines, one studio. We go deep rather than wide.
-          </motion.p>
+        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
+          <div className="lg:col-span-7">
+            <p className="text-sm text-muted-foreground">What I build</p>
+            <h2 className="headline-fluid mt-4 font-display text-foreground">
+              From first conversation to <em>finished product.</em>
+            </h2>
+          </div>
+          <p className="max-w-md text-lg leading-relaxed text-muted-foreground lg:col-span-5 lg:justify-self-end">
+            Every project starts with a conversation about what&apos;s slowing
+            you down. From there I scope the work with you, design it with you,
+            and build it properly.
+          </p>
         </div>
 
-        <div className="grid gap-px border border-border bg-border sm:grid-cols-3">
-          {services.map((service, i) => (
-            <motion.div
-              key={service.number}
-              initial={{ opacity: 0, y: 32 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.7,
-                delay: i * 0.1,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
+        <ul className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {services.map(({ title, Illustration, description }) => (
+            <li
+              key={title}
+              className="flex flex-col rounded-2xl border border-border bg-card p-7 [--sketch-paper:var(--card)] sm:p-8"
             >
-              <SpotlightCard className="group relative flex h-full flex-col gap-8 bg-card p-8 transition-colors duration-300">
-                <span className="font-mono text-xs text-muted-foreground">
-                  {service.number}
-                </span>
-                <div className="flex flex-col gap-4">
-                  <h3 className="text-xl font-medium text-foreground">
-                    {service.title}
-                  </h3>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {service.description}
-                  </p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {service.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="border border-border px-2 py-0.5 font-mono text-xs text-muted-foreground"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <span className="absolute bottom-8 right-8 text-focus opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                  →
-                </span>
-              </SpotlightCard>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Metrics grid */}
-        <div className="mt-px grid border border-t-0 border-border sm:grid-cols-4">
-          {metrics.map((metric, i) => (
-            <motion.div
-              key={metric.label}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.6,
-                delay: i * 0.08,
-                ease: [0.25, 0.46, 0.45, 0.94],
-              }}
-              className="flex flex-col gap-2 border-border p-8 sm:border-l sm:first:border-l-0"
-            >
-              <div className="flex items-baseline gap-1">
-                <span className="text-[56px] font-medium leading-none tracking-[-3.36px] text-foreground">
-                  {metric.value}
-                </span>
-                {metric.unit && (
-                  <span className="font-mono text-lg text-muted-foreground">
-                    {metric.unit}
-                  </span>
-                )}
-              </div>
-              <p className="font-mono text-xs text-muted-foreground">
-                {metric.label}
+              <Illustration className="-ml-2 h-28 w-auto self-start" />
+              <h3 className="mt-6 font-display text-[1.625rem] leading-tight text-foreground">
+                {title}
+              </h3>
+              <p className="mt-3 leading-relaxed text-muted-foreground">
+                {description}
               </p>
-            </motion.div>
+            </li>
           ))}
+        </ul>
+
+        <div className="mt-5 flex flex-col gap-4 rounded-2xl bg-paper-deep px-7 py-6 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+          <p className="text-foreground">
+            Not sure where your idea fits? Most projects mix a few of these.
+          </p>
+          <Link
+            href="#contact"
+            className="group inline-flex shrink-0 items-center gap-2 font-medium text-foreground underline decoration-input decoration-2 underline-offset-[6px] transition-colors hover:decoration-foreground"
+          >
+            Tell me what you need
+            <ArrowIcon className="size-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </Link>
         </div>
       </div>
     </section>

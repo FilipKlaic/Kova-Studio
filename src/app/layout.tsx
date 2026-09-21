@@ -1,33 +1,36 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
-import { SmoothScroll } from "@/components/providers/SmoothScroll";
+import { Instrument_Sans, Newsreader } from "next/font/google";
+import { SketchFilters } from "@/components/illustrations/SketchFilters";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const instrumentSans = Instrument_Sans({
+  variable: "--font-instrument-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
-});
-
-const interDisplay = Inter({
-  variable: "--font-inter-display",
-  subsets: ["latin"],
-  weight: ["500"],
+  style: ["normal", "italic"],
+  axes: ["opsz"],
 });
 
 export const metadata: Metadata = {
-  title: "Kova Studio — Digital products built to last",
+  title: "Kova — Design & engineering consultancy",
   description:
-    "Kova is a boutique design and development studio crafting web applications, websites, and mobile experiences for businesses that care about quality.",
-  keywords: ["web development", "mobile apps", "web design", "digital studio"],
+    "Kova is an independent design and engineering consultancy run by Filip Klaic, building internal tools, web and mobile apps, desktop software, websites and AI assistants.",
+  keywords: [
+    "software consultancy",
+    "web development",
+    "mobile apps",
+    "desktop apps",
+    "AI assistants",
+    "web design",
+  ],
   openGraph: {
-    title: "Kova Studio — Digital products built to last",
+    title: "Kova — Design & engineering consultancy",
     description:
-      "Boutique studio crafting web apps, websites, and mobile experiences.",
+      "Internal tools, web and mobile apps, desktop software, websites and AI assistants.",
     type: "website",
   },
 };
@@ -40,10 +43,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${interDisplay.variable} dark`}
+      data-scroll-behavior="smooth"
+      className={`${instrumentSans.variable} ${newsreader.variable}`}
     >
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <SmoothScroll>{children}</SmoothScroll>
+        <SketchFilters />
+        {children}
       </body>
     </html>
   );
