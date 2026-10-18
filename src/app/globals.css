@@ -20,54 +20,41 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-focus: var(--focus);
-  --color-success: var(--success);
-  --color-paper-deep: var(--paper-deep);
-  --color-sky: var(--fill-sky);
-  --color-ochre: var(--fill-ochre);
-  --color-sage: var(--fill-sage);
-  --color-clay: var(--fill-clay);
-  --font-sans: var(--font-instrument-sans);
-  --font-display: var(--font-newsreader);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-band: var(--band);
+  --font-sans: var(--font-geist);
+  --font-mono: var(--font-geist-mono);
   --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
-  --radius-2xl: 28px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
 }
 
 :root {
-  /* Paper & ink */
-  --background: #f6f3ec;
-  --foreground: #1f1d1a;
-  --card: #fbf9f4;
-  --card-foreground: #1f1d1a;
-  --paper-deep: #efeae0;
+  --background: #fcfaf6;
+  --foreground: #0d0d0d;
+  --card: #fffdf9;
+  --card-foreground: #0d0d0d;
+  --band: #f5f2ec;
 
-  /* Buttons are ink on paper */
-  --primary: #1f1d1a;
-  --primary-foreground: #f6f3ec;
-  --secondary: #ebe6da;
-  --secondary-foreground: #1f1d1a;
-  --muted: #efeae0;
-  --muted-foreground: #6b665c;
-  --accent: #ebe6da;
-  --accent-foreground: #1f1d1a;
-  --border: #e0d9cb;
-  --input: #d6cfbf;
+  --primary: #0d0d0d;
+  --primary-foreground: #ffffff;
+  --secondary: #f1ede6;
+  --secondary-foreground: #0d0d0d;
+  --muted: #f1ede6;
+  --muted-foreground: #666666;
+  --accent: #f1ede6;
+  --accent-foreground: #0d0d0d;
+  --border: #ebe6dd;
+  --input: #dcd6cb;
 
-  /* The one accent: ink blue */
-  --focus: #2f4f7f;
-  --ring: #2f4f7f;
-  --success: #4f7a4a;
+  /* The one accent: ultramarine */
+  --brand: #2b3fd1;
+  --brand-soft: #eceefd;
+  --ring: #2b3fd1;
 
-  /* Illustration fills */
-  --fill-sky: #c6d6e8;
-  --fill-ochre: #ecc98a;
-  --fill-sage: #c5d0b1;
-  --fill-clay: #e6b59d;
-
-  --radius: 10px;
+  --radius: 8px;
 }
 
 @layer base {
@@ -83,7 +70,7 @@
     scroll-padding-top: 5rem;
   }
   ::selection {
-    background: var(--fill-sky);
+    background: var(--brand-soft);
     color: var(--foreground);
   }
   @media (prefers-reduced-motion: reduce) {
@@ -98,55 +85,31 @@
 }
 
 @layer utilities {
-  .font-display {
-    font-family: var(--font-display), Georgia, serif;
-    font-optical-sizing: auto;
-    letter-spacing: -0.015em;
-  }
-  .headline-fluid {
-    font-size: clamp(2.25rem, 1.5rem + 3vw, 3.75rem);
-    line-height: 1.08;
-    letter-spacing: -0.02em;
-  }
   .headline-hero {
-    font-size: clamp(2.6rem, 1.7rem + 3.2vw, 4.25rem);
+    font-size: clamp(2.5rem, 1.6rem + 3.4vw, 4.25rem);
     line-height: 1.02;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.04em;
+    font-weight: 600;
   }
-}
-
-/* A single, quiet entrance for the hero. Nothing else on the page animates in. */
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
+  .headline {
+    font-size: clamp(1.875rem, 1.4rem + 1.6vw, 2.75rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    font-weight: 600;
   }
-  to {
-    opacity: 1;
-    transform: none;
+  .eyebrow {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--brand);
   }
-}
-
-@keyframes draw-line {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.rise-in {
-  animation: rise-in 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
-.draw-line {
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation: draw-line 1.4s cubic-bezier(0.65, 0, 0.35, 1) 0.6s forwards;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rise-in,
-  .draw-line {
-    animation: none;
-    stroke-dashoffset: 0;
+  /* A small window of real-looking product UI */
+  .fragment {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow:
+      0 1px 2px rgb(0 0 0 / 0.04),
+      0 8px 24px -8px rgb(0 0 0 / 0.08);
+    overflow: hidden;
   }
 }

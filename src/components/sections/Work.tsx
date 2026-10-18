@@ -2,14 +2,12 @@
 
 import { useEffect, useRef, useState, type ComponentType } from "react";
 import Link from "next/link";
-import { ArrowIcon } from "@/components/ui/arrow-icon";
-import {
-  AssistantSketch,
-  AtriumSketch,
-  FogarolliSketch,
-  MeridianSketch,
-  SavingsSketch,
-} from "@/components/illustrations/ProjectIllustrations";
+import { ArrowUpRight, X } from "lucide-react";
+import { FogarolliFragment } from "@/components/fragments/FogarolliFragment";
+import { ChatFragment } from "@/components/fragments/ChatFragment";
+import { GraphFragment } from "@/components/fragments/GraphFragment";
+import { TerminalFragment } from "@/components/fragments/TerminalFragment";
+import { ModFragment } from "@/components/fragments/ModFragment";
 
 interface Project {
   title: string;
@@ -19,7 +17,7 @@ interface Project {
   highlights: string[];
   stack: string[];
   repo: string;
-  Illustration: ComponentType<{ className?: string }>;
+  Fragment: ComponentType<{ className?: string }>;
 }
 
 const fogarolli = {
@@ -50,7 +48,7 @@ const products: Project[] = [
     ],
     stack: ["Tauri", "React", "TypeScript", "Fastify", "PostgreSQL", "Drizzle"],
     repo: "https://github.com/FilipKlaic/Atrium",
-    Illustration: AtriumSketch,
+    Fragment: ChatFragment,
   },
   {
     title: "Meridian",
@@ -66,7 +64,7 @@ const products: Project[] = [
     ],
     stack: ["Rust", "Tauri", "React", "TypeScript", "tree-sitter", "SQLite"],
     repo: "https://github.com/FilipKlaic/Meridian",
-    Illustration: MeridianSketch,
+    Fragment: GraphFragment,
   },
   {
     title: "BT-7274",
@@ -82,47 +80,32 @@ const products: Project[] = [
     ],
     stack: ["Python", "Gemini", "Ollama", "Piper", "faster-whisper"],
     repo: "https://github.com/FilipKlaic/BT-AI-agent",
-    Illustration: AssistantSketch,
+    Fragment: TerminalFragment,
   },
   {
-    title: "Savings Tracker",
-    kind: "Personal finance",
+    title: "Restall",
+    kind: "Open source · Game mod manager",
     summary:
-      "A desktop app for tracking income and expenses that sets aside a share of every payment toward savings goals.",
+      "A desktop app for Windows and Linux that finds your games and installs, updates or removes ReShade and RenoDX mods for them.",
     description:
-      "Log income and expenses, set a savings rule, and watch named goals fill up. Everything is stored locally, with a dashboard that shows where the month went.",
+      "Restall detects installed games across Steam, Epic, GOG, Ubisoft Connect, EA App and Xbox Game Pass. Pick a game, choose a mod and a version, and it handles the install without hunting for game folders.",
     highlights: [
-      "Monthly dashboard with a spending breakdown and a savings-rate trend",
-      "Local SQLite storage with migrations applied on first launch",
-      "Feature-sliced structure, so new features don't touch existing ones",
+      "Finds installed games across six launchers, including Heroic on Linux",
+      "Install, update or remove mods, with a choice of version",
+      "Cross-platform builds for Windows and Linux in Docker, with light and dark themes",
     ],
-    stack: ["Rust", "Tauri", "React", "TypeScript", "SQLite"],
-    repo: "https://github.com/FilipKlaic/Savings-tracker",
-    Illustration: SavingsSketch,
+    stack: ["C#", ".NET 10", "Avalonia", "CommunityToolkit.Mvvm", "Docker"],
+    repo: "https://github.com/fornkatt/Restall",
+    Fragment: ModFragment,
   },
 ];
-
-function Check() {
-  return (
-    <svg viewBox="0 0 16 16" className="mt-1 size-4 shrink-0 text-focus" aria-hidden="true">
-      <path
-        d="M3 8.6 L6.6 12 L13 4.6"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.8}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 function Highlights({ items }: { items: string[] }) {
   return (
     <ul className="space-y-2.5">
       {items.map((item) => (
-        <li key={item} className="flex gap-3 text-[15px] leading-relaxed text-foreground">
-          <Check />
+        <li key={item} className="flex gap-3 leading-relaxed text-foreground">
+          <span className="mt-[0.6em] size-1.5 shrink-0 rounded-full bg-brand" aria-hidden="true" />
           {item}
         </li>
       ))}
@@ -131,7 +114,18 @@ function Highlights({ items }: { items: string[] }) {
 }
 
 function Stack({ items }: { items: string[] }) {
-  return <p className="text-sm text-muted-foreground">{items.join(" · ")}</p>;
+  return (
+    <ul className="flex flex-wrap gap-1.5">
+      {items.map((item) => (
+        <li
+          key={item}
+          className="rounded-md border border-border bg-card px-2 py-0.5 font-mono text-xs text-muted-foreground"
+        >
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
 }
 
 function ProjectDialog({
@@ -153,26 +147,27 @@ function ProjectDialog({
       onClose={onClose}
       onClick={(e) => e.target === ref.current && ref.current.close()}
       aria-labelledby="project-dialog-title"
-      className="m-auto w-[min(640px,calc(100%-2rem))] max-h-[calc(100svh-2rem)] rounded-2xl border border-border bg-card p-0 text-foreground backdrop:bg-foreground/25"
+      className="m-auto w-[min(640px,calc(100%-2rem))] max-h-[calc(100svh-2rem)] rounded-xl border border-border bg-card p-0 text-foreground shadow-2xl backdrop:bg-foreground/40"
     >
       {project && (
-        <div className="p-7 sm:p-10">
+        <div className="p-6 sm:p-9">
           <div className="flex items-start justify-between gap-6">
-            <p className="text-sm text-muted-foreground">{project.kind}</p>
+            <p className="eyebrow">{project.kind}</p>
             <button
               onClick={() => ref.current?.close()}
-              className="-mr-2 -mt-2 rounded-full px-2 py-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              aria-label="Close"
+              className="-mr-2 -mt-2 rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-band hover:text-foreground"
             >
-              Close
+              <X className="size-5" strokeWidth={1.75} />
             </button>
           </div>
-          <h3 id="project-dialog-title" className="mt-3 font-display text-4xl">
+          <h3 id="project-dialog-title" className="headline mt-2">
             {project.title}
           </h3>
-          <p className="mt-5 leading-relaxed text-muted-foreground">
+          <p className="mt-4 leading-relaxed text-muted-foreground">
             {project.description}
           </p>
-          <div className="mt-7">
+          <div className="mt-6">
             <Highlights items={project.highlights} />
           </div>
           <div className="mt-8 flex flex-col gap-5 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
@@ -181,10 +176,10 @@ function ProjectDialog({
               href={project.repo}
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex shrink-0 items-center gap-2 self-start rounded-full bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/85"
+              className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-md bg-foreground px-4 py-2.5 text-sm font-medium text-background transition-colors hover:bg-brand"
             >
               View on GitHub
-              <ArrowIcon className="size-2.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight className="size-4" strokeWidth={1.75} />
             </Link>
           </div>
         </div>
@@ -197,57 +192,58 @@ export function Work() {
   const [active, setActive] = useState<Project | null>(null);
 
   return (
-    <section id="work" className="py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-14">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-end">
-          <div className="lg:col-span-7">
-            <p className="text-sm text-muted-foreground">Selected work</p>
-            <h2 className="headline-fluid mt-4 font-display text-foreground">
-              Software in production, <em>and products of my own.</em>
-            </h2>
+    <section id="work" className="border-t border-border py-24 sm:py-28">
+      <div className="mx-auto max-w-6xl px-6">
+        <div className="grid gap-6 lg:grid-cols-2 lg:items-end">
+          <div>
+            <p className="eyebrow">Selected work</p>
+            <h2 className="headline mt-3">Software in production, and side projects.</h2>
           </div>
-          <p className="max-w-md text-lg leading-relaxed text-muted-foreground lg:col-span-5 lg:justify-self-end">
-            Alongside client work I build my own products. It&apos;s where I
-            try new tools properly before they go anywhere near yours.
+          <p className="max-w-md leading-relaxed text-muted-foreground lg:justify-self-end">
+            Alongside client work I build my own products and contribute to
+            open-source ones. It&apos;s where I try new tools properly before
+            they go anywhere near yours.
           </p>
         </div>
 
         {/* Featured project */}
-        <article className="mt-16 grid overflow-hidden rounded-2xl border border-border bg-card [--sketch-paper:var(--card)] lg:grid-cols-2">
-          <div className="p-7 sm:p-10 lg:p-12">
-            <p className="text-sm text-muted-foreground">{fogarolli.kind}</p>
-            <h3 className="mt-3 font-display text-4xl text-foreground sm:text-5xl">
+        <article className="mt-12 grid overflow-hidden rounded-xl border border-border lg:grid-cols-[1fr_1.1fr]">
+          <div className="p-6 sm:p-10">
+            <p className="eyebrow">{fogarolli.kind}</p>
+            <h3 className="mt-2 text-3xl font-semibold tracking-[-0.035em]">
               {fogarolli.title}
             </h3>
-            <p className="mt-5 leading-relaxed text-muted-foreground">
+            <p className="mt-4 leading-relaxed text-muted-foreground">
               {fogarolli.description}
             </p>
-            <div className="mt-8">
+            <div className="mt-7">
               <Highlights items={fogarolli.highlights} />
             </div>
-            <div className="mt-8 border-t border-border pt-6">
+            <div className="mt-8">
               <Stack items={fogarolli.stack} />
             </div>
           </div>
-          <div className="flex items-center justify-center bg-paper-deep px-6 py-10 sm:px-10">
-            <FogarolliSketch className="w-full max-w-[460px]" />
+          <div className="relative flex items-center justify-center border-t border-border bg-band px-5 py-10 sm:px-10 lg:border-l lg:border-t-0">
+            <FogarolliFragment className="w-full max-w-[420px]" />
           </div>
         </article>
 
         {/* Own products */}
-        <ul className="mt-5 grid gap-5 md:grid-cols-2">
+        <ul className="mt-6 grid gap-6 md:grid-cols-2">
           {products.map((project) => (
             <li
               key={project.title}
-              className="group relative flex gap-6 rounded-2xl border border-border bg-card p-7 transition-colors [--sketch-paper:var(--card)] hover:border-input sm:p-8"
+              className="group relative flex flex-col overflow-hidden rounded-xl border border-border transition-colors hover:border-input"
             >
-              <project.Illustration className="hidden h-20 w-auto shrink-0 sm:block" />
-              <div className="flex min-w-0 flex-1 flex-col">
-                <p className="text-sm text-muted-foreground">{project.kind}</p>
-                <h3 className="mt-1.5 font-display text-2xl text-foreground">
+              <div className="flex h-60 items-center justify-center overflow-hidden border-b border-border bg-band px-6 sm:px-10">
+                <project.Fragment className="w-full max-w-[340px] transition-transform duration-300 group-hover:-translate-y-1" />
+              </div>
+              <div className="flex flex-1 flex-col p-6">
+                <p className="eyebrow">{project.kind}</p>
+                <h3 className="mt-1.5 text-xl font-semibold tracking-[-0.03em]">
                   <button
                     onClick={() => setActive(project)}
-                    className="text-left after:absolute after:inset-0 after:rounded-2xl focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-ring"
+                    className="text-left after:absolute after:inset-0 after:rounded-xl focus-visible:outline-none focus-visible:after:outline-2 focus-visible:after:outline-ring"
                     aria-haspopup="dialog"
                   >
                     {project.title}
@@ -256,18 +252,16 @@ export function Work() {
                 <p className="mt-2 leading-relaxed text-muted-foreground">
                   {project.summary}
                 </p>
-                <div className="mt-auto flex items-center gap-6 pt-6 text-sm font-medium">
-                  <span className="text-foreground underline decoration-input decoration-2 underline-offset-[5px] transition-colors group-hover:decoration-foreground">
-                    Read more
-                  </span>
+                <div className="mt-auto flex items-center gap-5 pt-5 text-sm font-medium">
+                  <span className="text-foreground group-hover:text-brand">Details →</span>
                   <Link
                     href={project.repo}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="relative z-10 inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground"
+                    className="relative z-10 inline-flex items-center gap-1 text-muted-foreground transition-colors hover:text-foreground"
                   >
                     GitHub
-                    <ArrowIcon className="size-2.5" />
+                    <ArrowUpRight className="size-3.5" strokeWidth={1.75} />
                   </Link>
                 </div>
               </div>

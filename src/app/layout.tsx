@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
-import { Instrument_Sans, Newsreader } from "next/font/google";
-import { SketchFilters } from "@/components/illustrations/SketchFilters";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const instrumentSans = Instrument_Sans({
-  variable: "--font-instrument-sans",
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
 });
 
-const newsreader = Newsreader({
-  variable: "--font-newsreader",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  style: ["normal", "italic"],
-  axes: ["opsz"],
 });
 
 export const metadata: Metadata = {
@@ -44,10 +41,9 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${instrumentSans.variable} ${newsreader.variable}`}
+      className={`${geist.variable} ${geistMono.variable}`}
     >
       <body className="min-h-screen bg-background text-foreground antialiased">
-        <SketchFilters />
         {children}
       </body>
     </html>

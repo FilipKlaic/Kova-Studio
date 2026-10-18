@@ -1,25 +1,17 @@
 import Link from "next/link";
 import { KovaLogo } from "@/components/layout/KovaLogo";
-
-const navLinks = [
-  { label: "Services", href: "#services" },
-  { label: "Work", href: "#work" },
-  { label: "About", href: "#about" },
-  { label: "Contact", href: "#contact" },
-];
+import { navLinks } from "@/components/layout/nav";
 
 export function Footer() {
   return (
     <footer className="border-t border-border">
-      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-6 py-12 sm:flex-row sm:items-center sm:justify-between lg:px-14">
-        <div className="flex flex-col gap-2">
+      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3 text-sm text-muted-foreground">
           <KovaLogo size="sm" />
-          <p className="text-sm text-muted-foreground">
-            Design &amp; engineering consultancy · Sweden
-          </p>
+          <span>© {new Date().getFullYear()} · Sweden</span>
         </div>
-        <nav className="flex flex-wrap gap-x-8 gap-y-2">
-          {navLinks.map((link) => (
+        <nav className="flex flex-wrap gap-x-6 gap-y-2">
+          {[...navLinks, { label: "Contact", href: "#contact" }].map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -29,9 +21,6 @@ export function Footer() {
             </Link>
           ))}
         </nav>
-        <p className="text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Kova
-        </p>
       </div>
     </footer>
   );
